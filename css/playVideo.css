@@ -1,0 +1,344 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* 🔹 Base styles: Mobile-first (default for all screens) */
+.video-container {
+  position: relative;
+  top: 56px;
+}
+
+.play-video {
+  padding: 20px;
+}
+
+.video-container .play-video img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.video-container .play-video .video-info .video-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 28px;
+  color: rgb(15, 15, 15);
+  margin: 5px 0;
+}
+
+.video-container .play-video .video-info .info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.video-container .play-video .video-info .info .channel-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.video-container .play-video .video-info .info .channel-info .profile {
+  height: 36px;
+  width: 36px;
+  flex-shrink: 0;
+}
+
+.video-container .play-video .video-info .info .channel-info .profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.video-container
+  .play-video
+  .video-info
+  .info
+  .channel-info
+  .channel-followers {
+  display: flex;
+  flex-direction: column;
+}
+
+.channel-name {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: rgb(15, 15, 15);
+}
+
+.subscriber {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: rgb(96, 96, 96);
+}
+
+.video-container .play-video .video-info .info .subscribe {
+  margin-left: 15px;
+}
+
+.video-container .play-video .video-info .info .subscribe button {
+  border: none;
+  border-radius: 20px;
+  padding: 0 13px;
+  background: rgb(15, 15, 15);
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 36px;
+  cursor: pointer;
+}
+
+.video-container .play-video .video-info .info .subscribe button:hover {
+  background: rgb(41, 40, 40);
+}
+
+.video-container .play-video .video-info .info .like-dislike {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.video-container .play-video .video-info .info .like-dislike button {
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 33px;
+  cursor: pointer;
+}
+
+.video-container .play-video .video-info .info .like-dislike button:hover {
+  background: rgb(229, 229, 229);
+}
+
+.video-container .like-button {
+  display: flex;
+  align-items: center;
+}
+
+.like {
+  position: relative;
+}
+
+.like-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(15, 15, 15);
+}
+
+.like::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  right: 0;
+  height: 70%;
+  width: 1px;
+  background-color: rgb(227, 224, 224);
+}
+
+.like button {
+  border-radius: 20px 0 0 20px;
+  padding-left: 10px;
+}
+
+.like .like-count i {
+  font-size: 18px;
+}
+
+.like .count {
+  padding: 0 6px;
+}
+
+.dislike button {
+  border-radius: 0 20px 20px 0;
+  padding: 0px 15px 0px 12px;
+}
+
+.play-video .like-dislike .dislike i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  line-height: 35px;
+}
+
+.share-button button,
+.download-button button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  padding: 1px 12px;
+}
+
+.share-button button .ph,
+.download-button button .ph {
+  padding-right: 5px;
+  font-size: 20px;
+}
+
+.clip,
+.save {
+  display: none;
+}
+
+.like-dislike .clip i {
+  font-size: 18px;
+}
+
+.three-dot button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.three-dot button .ph {
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.recomended {
+  padding: 30px 20px 20px 20px;
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.recomended .recomended-videos {
+  width: 100%;
+}
+
+.recomended .recomended-videos .video img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.recomended-video-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.recomended-video-info .channel .title {
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 20px;
+  color: rgb(15, 15, 15);
+}
+
+.recomended-video-info .channel .channel-name,
+.channel-info {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  font-style: normal;
+  color: rgb(96, 96, 96);
+}
+
+.recomended-video-info .dot-icon i {
+  text-align: right;
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.recomended-video-info .dot-icon i:hover {
+  background: rgb(229, 229, 229);
+}
+
+/* 🔹 Larger screens (Tablet and up) */
+@media (min-width: 542px) {
+  .clip {
+    display: block;
+  }
+}
+
+@media (min-width: 638px) {
+  .save {
+    display: block;
+  }
+}
+
+@media (min-width: 643px) {
+  .clip,
+  .save,
+  .download {
+    display: none;
+  }
+
+  .video-container .play-video .video-info .info {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 800px) {
+  .download {
+    display: block;
+  }
+}
+
+@media (min-width: 1000px) {
+  .recomended {
+    display: block;
+  }
+
+  .video-container {
+    display: flex;
+  }
+
+  .play-video {
+    width: 67%;
+    padding-left: 50px;
+  }
+
+  .recomended {
+    width: 32%;
+    margin-left: 67%;
+    padding-left: 0px;
+  }
+
+  .recomended .recomended-videos {
+    display: flex;
+    gap: 8px;
+    padding: 3px 0;
+  }
+
+  .recomended .recomended-videos .video {
+    width: 40%;
+    flex-shrink: 0;
+  }
+
+  .save,
+  .clip {
+    display: none;
+  }
+}
+
+@media (min-width: 1230px) {
+  .download {
+    display: block;
+  }
+}
+
+@media (min-width: 1410px) {
+  .save {
+    display: block;
+  }
+}

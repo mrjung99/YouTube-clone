@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube Clone</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!-- Outlined Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+    <!-- phosphor-icons -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
+
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <section class="layout">
+      <nav>
+        <div class="nav-left">
+          <div class="menu">
+            <i class="ri-menu-line"></i>
+          </div>
+
+          <div class="logo" onclick="window.location.href='index.html'">
+            Clone<span>Tube</span>
+          </div>
+        </div>
+
+        <div class="nav-middle">
+          <div class="search">
+            <input type="text" placeholder="Search" />
+            <i id="search-icon" class="ri-search-line"></i>
+          </div>
+          <div class="mic">
+            <i class="ri-mic-fill"></i>
+          </div>
+        </div>
+
+        <div class="nav-right">
+          <div class="create">
+            <i class="material-icons-outlined">add</i>
+            <p>Create</p>
+          </div>
+          <div class="bell icon">
+            <i class="material-icons-outlined">notifications</i>
+          </div>
+          <div class="profile">
+            <img
+              src="images/profile.jpg"
+              alt=""
+              onclick="window.location.href='profile.html'"
+            />
+          </div>
+        </div>
+      </nav>
+      <div class="sidebar">
+        <aside>
+          <div class="sidebar-container">
+            <div class="side-links">
+              <div class="link active">
+                <i class="material-icons">home</i>
+                <span>Home</span>
+              </div>
+
+              <div class="link">
+                <div class="shorts-icon">
+                  <i class="ph ph-file-video"></i>
+                </div>
+                <span>Shorts</span>
+              </div>
+
+              <div class="link">
+                <i class="material-icons-outlined">subscriptions</i>
+                <span>Subscriptions</span>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="side-links">
+              <div class="link title-you">
+                <span class="link-title-you">You</span>
+                <i id="you" class="ri-arrow-right-wide-fill"></i>
+              </div>
+              <div class="link">
+                <i class="material-icons">history</i>
+                <span>History</span>
+              </div>
+
+              <div class="link">
+                <i class="material-icons">playlist_play</i>
+                <span>Playlists</span>
+              </div>
+              <div class="link">
+                <i class="material-icons-outlined">smart_display</i>
+                <span>Your videos</span>
+              </div>
+              <div class="link">
+                <i class="material-icons-outlined">school</i>
+                <span>Your courses</span>
+              </div>
+              <div class="link">
+                <i class="material-icons">schedule</i>
+                <span>Watch later</span>
+              </div>
+              <div class="link">
+                <i class="material-icons-outlined">thumb_up</i>
+                <span>Liked videos</span>
+              </div>
+              <div class="link">
+                <i class="material-icons-outlined">content_cut</i>
+                <span>Your Clips</span>
+              </div>
+            </div>
+            <hr />
+
+            <div class="side-links">
+              <span class="link-title">Explore</span>
+              <div class="link">
+                <i class="material-icons-outlined">local_fire_department</i>
+                <span>Trending</span>
+              </div>
+              <div class="link">
+                <i class="material-icons-outlined">music_note</i>
+                <span>Music</span>
+              </div>
+
+              <div class="link">
+                <i class="material-icons-outlined">sports_esports</i>
+                <span>Gamng</span>
+              </div>
+
+              <div class="link">
+                <i class="material-icons-outlined">military_tech</i>
+                <span>Sports</span>
+              </div>
+            </div>
+            <hr />
+
+            <div class="side-links">
+              <span class="link-title">More from yutube</span>
+              <div class="link">
+                <div class="yt">
+                  <i class="ph ph-monitor-play"></i>
+                </div>
+                <span>YouTube Premium</span>
+              </div>
+
+              <div class="link">
+                <div class="yt">
+                  <i class="ph ph-video"></i>
+                </div>
+                <span>YouTube Studio</span>
+              </div>
+
+              <div class="link">
+                <div class="yt">
+                  <i class="ph ph-fast-forward-circle"></i>
+                </div>
+                <span>YouTube Music</span>
+              </div>
+
+              <div class="link">
+                <div class="yt">
+                  <i class="ph ph-baby"></i>
+                </div>
+                <span>YouTube Kids</span>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="side-links">
+              <div class="link">
+                <i class="material-icons-outlined">settings</i>
+                <span>Settings</span>
+              </div>
+              <div class="link">
+                <i class="material-icons-outlined">flag</i>
+                <span>Report History</span>
+              </div>
+              <div class="link">
+                <i class="material-icons-outlined">help</i>
+                <span>Help</span>
+              </div>
+              <div class="link">
+                <i class="material-icons-outlined">feedback</i>
+                <span>Send feedback</span>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="footer">
+              <div class="footer-content">
+                <a href="#">About</a>
+                <a href="#">Press</a>
+                <a href="#">Copyright</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Creaters</a>
+                <a href="#">Advertise</a>
+                <a href="#">Developers</a>
+              </div>
+              <div class="footer-content">
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a href="#">Policy & Safety</a>
+                <a href="#">How YouTube works</a><br />
+                <a href="#">Test new features</a>
+              </div>
+              <div class="footer-notes">&copy; Code addict Nepal</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <main>
+        <div class="container">
+          <div class="card" onclick="window.location.href='PlayVideo.html'">
+            <div class="video-preview">
+              <img class="video-thumb" src="images/Screenshot (2).png" alt="" />
+              <div class="iframe-wrapper">
+                <iframe
+                  class="video-iframe"
+                  src="https://www.youtube.com/embed/7lCDEYXw3mM?enablejsapi=1&autoplay=1&mute=1"
+                  allow="autoplay"
+                  frameborder="0"
+                ></iframe>
+              </div>
+            </div>
+
+            <div class="description">
+              <div class="profile">
+                <a href="profile.html">
+                  <img src="images/profile.jpg" alt="" />
+                </a>
+              </div>
+
+              <div class="video-info">
+                <span class="video-title">Links and Images with Map</span>
+                <a href="profile.html">
+                  <span
+                    class="channel-name"
+                    onclick="window.location.href='profile.html'"
+                    >Chai aur Code</span
+                  >
+                </a>
+                <div class="views-time">
+                  <span class="views">79K views</span>
+                  <span>&middot;</span>
+                  <span class="time">2 years ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" onclick="window.location.href='PlayVideo.html'">
+            <div class="video-preview">
+              <img class="video-thumb" src="images/Screenshot (2).png" alt="" />
+              <div class="iframe-wrapper">
+                <iframe
+                  class="video-iframe"
+                  src="https://www.youtube.com/embed/7lCDEYXw3mM?enablejsapi=1&autoplay=1&mute=1"
+                  allow="autoplay"
+                  frameborder="0"
+                ></iframe>
+              </div>
+            </div>
+
+            <div class="description">
+              <div class="profile">
+                <a href="profile.html">
+                  <img src="images/profile.jpg" alt="" />
+                </a>
+              </div>
+
+              <div class="video-info">
+                <span class="video-title">Links and Images with Map</span>
+                <a href="profile.html">
+                  <span
+                    class="channel-name"
+                    onclick="window.location.href='profile.html'"
+                    >Chai aur Code</span
+                  >
+                </a>
+                <div class="views-time">
+                  <span class="views">79K views</span>
+                  <span>&middot;</span>
+                  <span class="time">2 years ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" onclick="window.location.href='PlayVideo.html'">
+            <div class="video-preview">
+              <img class="video-thumb" src="images/Screenshot (2).png" alt="" />
+              <div class="iframe-wrapper">
+                <iframe
+                  class="video-iframe"
+                  src="https://www.youtube.com/embed/7lCDEYXw3mM?enablejsapi=1&autoplay=1&mute=1"
+                  allow="autoplay"
+                  frameborder="0"
+                ></iframe>
+              </div>
+            </div>
+
+            <div class="description">
+              <div class="profile">
+                <a href="profile.html">
+                  <img src="images/profile.jpg" alt="" />
+                </a>
+              </div>
+
+              <div class="video-info">
+                <span class="video-title">Links and Images with Map</span>
+                <a href="profile.html">
+                  <span
+                    class="channel-name"
+                    onclick="window.location.href='profile.html'"
+                    >Chai aur Code</span
+                  >
+                </a>
+                <div class="views-time">
+                  <span class="views">79K views</span>
+                  <span>&middot;</span>
+                  <span class="time">2 years ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="card"
+            onmouseenter="playVideo(this)"
+            onmouseleave="pauseVideo(this)"
+            onclick="window.location.href='PlayVideo.html'"
+          >
+            <div class="video-preview">
+              <img class="video-thumb" src="images/Screenshot (2).png" alt="" />
+              <div class="iframe-wrapper">
+                <iframe
+                  class="video-iframe"
+                  src="https://www.youtube.com/embed/7lCDEYXw3mM?enablejsapi=1&autoplay=1&mute=1"
+                  allow="autoplay"
+                  frameborder="0"
+                ></iframe>
+              </div>
+            </div>
+
+            <div class="description">
+              <div class="profile">
+                <a href="profile.html">
+                  <img src="images/profile.jpg" alt="" />
+                </a>
+              </div>
+
+              <div class="video-info">
+                <span class="video-title">Links and Images with Map</span>
+                <a href="profile.html">
+                  <span
+                    class="channel-name"
+                    onclick="window.location.href='profile.html'"
+                    >Chai aur Code</span
+                  >
+                </a>
+                <div class="views-time">
+                  <span class="views">79K views</span>
+                  <span>&middot;</span>
+                  <span class="time">2 years ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <div class="create-popUP">
+      <div class="upload option">
+        <i class="ri-video-line"></i>
+        <span>Upload video</span>
+      </div>
+      <div class="live option">
+        <i class="ri-base-station-line"></i>
+        <span>Go live</span>
+      </div>
+      <div class="post option">
+        <i class="ri-edit-box-line"></i>
+        <span>Create post</span>
+      </div>
+    </div>
+
+    <div class="notification">
+      <div class="top-bar">
+        <div class="noti-top">
+          <span>Notifications</span>
+          <div class="setting">
+            <i class="ri-settings-3-line"></i>
+          </div>
+        </div>
+        <hr />
+      </div>
+
+      <div class="main-body">
+        <div class="noti-body">
+          <div class="noti-body-show">
+            <div class="noti-body-left">
+              <img src="images/profile.jpg" alt="" />
+            </div>
+            <div class="noti-body-middle1">
+              <span class="noti-title">4k gamming uploaded:Form ma</span>
+            </div>
+            <div class="noti-body-middle2">
+              <img src="images/Screenshot (2).png" alt="" />
+            </div>
+            <div class="noti-body-right">
+              <i class="ri-more-2-line"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="noti-body">
+          <div class="noti-body-show">
+            <div class="noti-body-left">
+              <img src="images/profile.jpg" alt="" />
+            </div>
+            <div class="noti-body-middle1">
+              <span class="noti-title"
+                >4k gamming is live:IPAD MA AAJA DEKHI// OLD SCHOOL BACK TO
+                LIVE</span
+              >
+            </div>
+            <div class="noti-body-middle2">
+              <img src="images/Screenshot (2).png" alt="" />
+            </div>
+            <div class="noti-body-right">
+              <i class="ri-more-2-line"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="noti-body">
+          <div class="noti-body-show">
+            <div class="noti-body-left">
+              <img src="images/profile.jpg" alt="" />
+            </div>
+            <div class="noti-body-middle1">
+              <span class="noti-title"
+                >4k gamming is live:IPAD MA AAJA DEKHI// OLD SCHOOL BACK TO
+                LIVE</span
+              >
+            </div>
+            <div class="noti-body-middle2">
+              <img src="images/Screenshot (2).png" alt="" />
+            </div>
+            <div class="noti-body-right">
+              <i class="ri-more-2-line"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="noti-body">
+          <div class="noti-body-show">
+            <div class="noti-body-left">
+              <img src="images/profile.jpg" alt="" />
+            </div>
+            <div class="noti-body-middle1">
+              <span class="noti-title"
+                >4k gamming is live:IPAD MA AAJA DEKHI// OLD SCHOOL BACK TO
+                LIVE</span
+              >
+            </div>
+            <div class="noti-body-middle2">
+              <img src="images/Screenshot (2).png" alt="" />
+            </div>
+            <div class="noti-body-right">
+              <i class="ri-more-2-line"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="noti-body">
+          <div class="noti-body-show">
+            <div class="noti-body-left">
+              <img src="images/profile.jpg" alt="" />
+            </div>
+            <div class="noti-body-middle1">
+              <span class="noti-title"
+                >4k gamming is live:IPAD MA AAJA DEKHI// OLD SCHOOL BACK TO
+                LIVE</span
+              >
+            </div>
+            <div class="noti-body-middle2">
+              <img src="images/Screenshot (2).png" alt="" />
+            </div>
+            <div class="noti-body-right">
+              <i class="ri-more-2-line"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="noti-body">
+          <div class="noti-body-show">
+            <div class="noti-body-left">
+              <img src="images/profile.jpg" alt="" />
+            </div>
+            <div class="noti-body-middle1">
+              <span class="noti-title"
+                >4k gamming is live:IPAD MA AAJA DEKHI// OLD SCHOOL BACK TO
+                LIVE</span
+              >
+            </div>
+            <div class="noti-body-middle2">
+              <img src="images/Screenshot (2).png" alt="" />
+            </div>
+            <div class="noti-body-right">
+              <i class="ri-more-2-line"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="noti-body">
+          <div class="noti-body-show">
+            <div class="noti-body-left">
+              <img src="images/profile.jpg" alt="" />
+            </div>
+            <div class="noti-body-middle1">
+              <span class="noti-title"
+                >4k gamming is live:IPAD MA AAJA DEKHI// OLD SCHOOL BACK TO
+                LIVE</span
+              >
+            </div>
+            <div class="noti-body-middle2">
+              <img src="images/Screenshot (2).png" alt="" />
+            </div>
+            <div class="noti-body-right">
+              <i class="ri-more-2-line"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="noti-body">
+          <div class="noti-body-show">
+            <div class="noti-body-left">
+              <img src="images/profile.jpg" alt="" />
+            </div>
+            <div class="noti-body-middle1">
+              <span class="noti-title"
+                >4k gamming is live:IPAD MA AAJA DEKHI// OLD SCHOOL BACK TO
+                LIVE</span
+              >
+            </div>
+            <div class="noti-body-middle2">
+              <img src="images/Screenshot (2).png" alt="" />
+            </div>
+            <div class="noti-body-right">
+              <i class="ri-more-2-line"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/script.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+  </body>
+</html>
