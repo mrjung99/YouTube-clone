@@ -363,7 +363,6 @@ aside.collaspe .footer {
 }
 
 /* ========================== */
-
 main {
   margin-top: 60px;
   margin-left: 215px;
@@ -391,10 +390,12 @@ main {
   width: 100%;
   aspect-ratio: 16/9;
   overflow: hidden;
+  /* background: green; */
 }
 
 .video-thumb {
   border-radius: 10px;
+  opacity: 1;
 }
 
 .video-thumb,
@@ -410,7 +411,6 @@ main {
 
 .video-iframe {
   opacity: 0;
-  pointer-events: none;
 }
 
 .card:hover .video-thumb {
@@ -430,6 +430,13 @@ main {
 
 .container .card .video-content:hover {
   border-radius: 0;
+}
+
+.video-preview i {
+  color: white;
+  background: rgba(15, 15, 15, 0.6);
+  padding: 8px;
+  border-radius: 50%;
 }
 
 .container .card .profile {
