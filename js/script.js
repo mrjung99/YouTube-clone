@@ -1,66 +1,165 @@
 // const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
+const videoContainer = document.querySelector(".container");
+const videoTopics = ["sports", "esports", "programming", "music", "dancing"];
+const players = [];
+const maxVideos = 1;
 
-const BASE_URL = `https://www.googleapis.com/youtube/v3/videos?id=7lCDEYXw3mM&key=${API_KEY}&part=snippet,contentDetails,statistics,status`;
-
-async function fetchData() {
+async function fetchData(topic) {
+  const searchVideoUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxVideos}&q=${topic}&type=video&key=${API_KEY}`;
   try {
-    const response = await fetch(BASE_URL);
+    const response = await fetch(searchVideoUrl);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
     const data = await response.json();
-    console.log(data);
+
+    data.items.forEach((video, index) => {
+      createCard(video, topic, index);
+    });
+
+    // console.log(data);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 }
 
-fetchData();
+async function createCard(video, topic, index) {
+  console.log("video id", video);
+  const videoId = video.id.videoId;
+  const playerId = `player-${topic}-${index}`;
 
-// youtube iframe form homepage
-const players = new Map();
+  const searchContentDetailUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${API_KEY}&part=snippet,contentDetails,statistics,status`;
+  const response = await fetch(searchContentDetailUrl);
+  const data = await response.json();
 
-function onYouTubeIframeApiReady() {
-  document.querySelectorAll(".video-iframe").forEach((iframe, index) => {
-    iframe.id = `yt-player-${i}`;
-    const player = new YT.player(iframe, {
-      event: {
-        onready: (e) => {
-          e.target.pauseVideo();
-          players.set(iframe.id, e.target);
-        },
+  console.log("video content", data);
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  card.innerHTML = `
+          <div class="video-preview">
+              <img class="video-thumb" src="${
+                data.items[0].snippet.thumbnails.high.url
+              }" alt="" />
+              <div id="${playerId}" class="video-iframe"></div>
+            </div>
+            <div class="description">
+              <div class="profile">
+                <a href="profile.html">
+                  <img src="images/profile.jpg" alt="" />
+                </a>
+              </div>
+              <div class="video-info">
+                <span class="video-title">${video.snippet.title}</span>
+                <a href="profile.html">
+                  <span class="channel-name">${
+                    video.snippet.channelTitle
+                  }</span>
+                </a>
+                <div class="views-time">
+                  <span class="views">${formatViewLikeCount(
+                    data.items[0].statistics.viewCount
+                  )} views</span>
+                  <span>&middot;</span>
+                  <span class="time">${formatPublishedDate(
+                    data.items[0].snippet.publishedAt
+                  )}</span>
+                </div>
+              </div>
+            </div>
+          `;
+
+  videoContainer.appendChild(card);
+
+  setTimeout(() => {
+    const player = new YT.Player(playerId, {
+      height: "100%",
+      width: "100%",
+
+      videoId: videoId,
+      playerVars: {
+        controls: 0,
+        mute: 1,
+        modestbranding: 0,
+        rel: 0,
+        showinfo: 0,
+      },
+      events: {
+        onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange,
       },
     });
+
+    players.push({ card, player });
+
+    function onPlayerReady(event) {
+      event.target.pauseVideo();
+      card.addEventListener("mouseenter", () => player.playVideo());
+      card.addEventListener("mouseleave", () => player.pauseVideo());
+    }
+
+    function onPlayerStateChange() {}
+  }, 500);
+}
+
+function onYouTubeIframeAPIReady() {
+  videoTopics.forEach((topic) => {
+    fetchData(topic);
   });
 }
 
-// this will play the video when mouse enter in to the card
-function playVideo(card) {
-  const iframe = card.querySelector(".video-iframe");
-
-  const player = players.get(iframe.id);
-  if (player) {
-    player.mute(); // start muted
-    player.playVideo();
-  }
+//this will format the like count as 1k,1.5k etc
+function formatViewLikeCount(count) {
+  const likeCount = Number(count);
+  if (likeCount >= 1e9) return (likeCount / 139).toFixed(1) + "B";
+  if (likeCount >= 1e6) return (likeCount / 1e6).toFixed(1) + "M";
+  if (likeCount >= 1e3) return (likeCount / 1e3).toFixed(1) + "k";
 }
 
-// this will pause the video when mouse leave the card
-function pauseVideo(card) {
-  const iframe = card.querySelector(".video-iframe");
+//this will format the published date as 1day ago, 2months ago, 1year ago etc
+function formatPublishedDate(date) {
+  const publishedDate = new Date(date);
+  const now = new Date();
+  const diff = now - publishedDate; //in milliseconds
 
-  const player = players.get(iframe.id);
-  if (player) {
-    player.pauseVideo();
-    player.seekTo(0);
-  }
+  const sec = diff / 1000;
+  const min = sec / 60;
+  const hrs = min / 60;
+  const day = hrs / 24;
+  const month = day / 30;
+  const year = month / 12;
+
+  if (year >= 1)
+    return (
+      year.toFixed(1) + " " + "year" + (year >= 2 ? "s" : "") + " " + "ago"
+    );
+
+  if (month >= 1)
+    return (
+      month.toFixed(1) + " " + "month" + (month >= 2 ? "s" : "") + " " + "ago"
+    );
+
+  if (day >= 1)
+    return Math.floor(day) + " " + "day" + (day >= 2 ? "s" : "") + " " + "ago";
+
+  if (hrs >= 1)
+    return Math.floor(hrs) + " " + "hour" + (hrs >= 2 ? "s" : "") + " " + "ago";
+
+  if (min >= 1)
+    return (
+      Math.floor(min) + " " + "minute" + (min >= 2 ? "s" : "") + " " + "ago"
+    );
+
+  return "Just now";
 }
 
 const createBtn = document.querySelector(".create");
 const createPopUp = document.querySelector(".create-popUP");
 const bell = document.querySelector(".bell");
 const notificationBox = document.querySelector(".notification");
-const hambargarIcon = document.querySelector(".menu");
+const hamburgarIcon = document.querySelector(".menu");
 const sideBar = document.querySelector("aside");
 const mainArea = document.querySelector("main");
 const sideBarContainer = document.querySelector(".sidebar");
@@ -82,7 +181,7 @@ document.addEventListener("click", () => {
   notificationBox.classList.remove("show");
 });
 
-hambargarIcon.addEventListener("click", () => {
+hamburgarIcon.addEventListener("click", () => {
   const width = window.innerWidth;
 
   if (width <= 800) {
