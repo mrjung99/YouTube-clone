@@ -30,6 +30,14 @@
       type="text/css"
       href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
     />
+    <!-- fontawesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <title>YouTube Clone</title>
   </head>
   <body>
@@ -74,7 +82,35 @@
 
     <div class="video-container">
       <div class="play-video">
-        <img src="images/Screenshot (2).png" alt="" />
+        <div class="player-wrapper">
+          <div id="player" class="player"></div>
+          <div class="player-control">
+            <div class="progressbar">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                id="progress-bar"
+                value="0"
+              />
+            </div>
+            <div class="second-row">
+              <div class="left-side">
+                <i class="fa-solid fa-pause"></i>
+                <i class="fa-solid fa-forward-step"></i>
+                <div class="volume">
+                  <i class="fa-solid fa-volume-low"></i>
+                  <input type="range" min="0" max="100" id="volume-slider" />
+                </div>
+              </div>
+              <div class="right-side">
+                <i class="ri-rectangle-line"></i>
+                <i class="fa-solid fa-expand"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="video-info">
           <div class="video-title">
             PMSL VLOG ! Break Day | Team @HorraEsportsOfficial | raw vlog
@@ -155,163 +191,10 @@
             </div>
           </div>
         </div>
-
-        <div class="recomended-videos">
-          <div class="video">
-            <img src="images/Screenshot (2).png" alt="" />
-          </div>
-          <div class="recomended-video-info">
-            <div class="channel">
-              <div class="title">
-                [NP] 2025 PMSL CSA Spring Survival Stage Day 2
-              </div>
-              <span class="channel-name">Hait Dami</span>
-              <div class="channel-info">
-                <span class="views">35k views</span>
-                <span>&middot;</span>
-                <span class="time">1 year ago</span>
-              </div>
-            </div>
-            <div class="dot-icon">
-              <i class="ph ph-dots-three-vertical"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="recomended-videos">
-          <div class="video">
-            <img src="images/Screenshot (2).png" alt="" />
-          </div>
-          <div class="recomended-video-info">
-            <div class="channel">
-              <div class="title">
-                [NP] 2025 PMSL CSA Spring - Survival Stage Day 2
-              </div>
-              <span class="channel-name">Hait Dami</span>
-              <div class="channel-info">
-                <span class="views">35k views</span>
-                <span>&middot;</span>
-                <span class="time">1 year ago</span>
-              </div>
-            </div>
-            <div class="dot-icon">
-              <i class="ph ph-dots-three-vertical"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="recomended-videos">
-          <div class="video">
-            <img src="images/Screenshot (2).png" alt="" />
-          </div>
-          <div class="recomended-video-info">
-            <div class="channel">
-              <div class="title">
-                [NP] 2025 PMSL CSA Spring - Survival Stage Day 2
-              </div>
-              <span class="channel-name">Hait Dami</span>
-              <div class="channel-info">
-                <span class="views">35k views</span>
-                <span>&middot;</span>
-                <span class="time">1 year ago</span>
-              </div>
-            </div>
-            <div class="dot-icon">
-              <i class="ph ph-dots-three-vertical"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="recomended-videos">
-          <div class="video">
-            <img src="images/Screenshot (2).png" alt="" />
-          </div>
-          <div class="recomended-video-info">
-            <div class="channel">
-              <div class="title">
-                [NP] 2025 PMSL CSA Spring - Survival Stage Day 2
-              </div>
-              <span class="channel-name">Hait Dami</span>
-              <div class="channel-info">
-                <span class="views">35k views</span>
-                <span>&middot;</span>
-                <span class="time">1 year ago</span>
-              </div>
-            </div>
-            <div class="dot-icon">
-              <i class="ph ph-dots-three-vertical"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="recomended-videos">
-          <div class="video">
-            <img src="images/Screenshot (2).png" alt="" />
-          </div>
-          <div class="recomended-video-info">
-            <div class="channel">
-              <div class="title">
-                [NP] 2025 PMSL CSA Spring - Survival Stage Day 2
-              </div>
-              <span class="channel-name">Hait Dami</span>
-              <div class="channel-info">
-                <span class="views">35k views</span>
-                <span>&middot;</span>
-                <span class="time">1 year ago</span>
-              </div>
-            </div>
-            <div class="dot-icon">
-              <i class="ph ph-dots-three-vertical"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="recomended-videos">
-          <div class="video">
-            <img src="images/Screenshot (2).png" alt="" />
-          </div>
-          <div class="recomended-video-info">
-            <div class="channel">
-              <div class="title">
-                [NP] 2025 PMSL CSA Spring - Survival Stage Day 2
-              </div>
-              <span class="channel-name">Hait Dami</span>
-              <div class="channel-info">
-                <span class="views">35k views</span>
-                <span>&middot;</span>
-                <span class="time">1 year ago</span>
-              </div>
-            </div>
-            <div class="dot-icon">
-              <i class="ph ph-dots-three-vertical"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="recomended-videos">
-          <div class="video">
-            <img src="images/Screenshot (2).png" alt="" />
-          </div>
-          <div class="recomended-video-info">
-            <div class="channel">
-              <div class="title">
-                [NP] 2025 PMSL CSA Spring Survival Stage Day 2
-              </div>
-              <span class="channel-name">Hait Dami</span>
-              <div class="channel-info">
-                <span class="views">35k views</span>
-                <span>&middot;</span>
-                <span class="time">1 year ago</span>
-              </div>
-            </div>
-            <div class="dot-icon">
-              <i class="ph ph-dots-three-vertical"></i>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
-    <script src="./js/script.js"></script>
+    <script src="./js/playVideo.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
   </body>
 </html>

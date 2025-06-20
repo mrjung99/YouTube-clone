@@ -1,8 +1,12 @@
 // const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
+
+//CODE ADDICT NEPAL
+const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
+
 const videoContainer = document.querySelector(".container");
-const videoTopics = ["sports", "esports", "programming", "music", "dancing"];
+const videoTopics = ["sports"];
+const maxVideos = 2;
 const players = [];
-const maxVideos = 1;
 
 async function fetchData(topic) {
   const searchVideoUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxVideos}&q=${topic}&type=video&key=${API_KEY}`;
@@ -17,26 +21,35 @@ async function fetchData(topic) {
     data.items.forEach((video, index) => {
       createCard(video, topic, index);
     });
-
-    // console.log(data);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 }
 
+//create video card with unque id
 async function createCard(video, topic, index) {
-  console.log("video id", video);
   const videoId = video.id.videoId;
   const playerId = `player-${topic}-${index}`;
 
+  //this will fetch the details about video
   const searchContentDetailUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${API_KEY}&part=snippet,contentDetails,statistics,status`;
   const response = await fetch(searchContentDetailUrl);
   const data = await response.json();
+  const channelId = data.items[0].snippet.channelId;
 
+  //this fetch the details about channel
+  const channelInfoUrl = `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${API_KEY}`;
+  const channel = await fetch(channelInfoUrl);
+  const channelData = await channel.json();
+
+  const channelProfile = channelData.items[0].snippet.thumbnails.default.url;
   console.log("video content", data);
 
   const card = document.createElement("div");
   card.className = "card";
+  card.addEventListener("click", () => {
+    redirectPlayVideoPage(videoId);
+  });
 
   card.innerHTML = `
           <div class="video-preview">
@@ -44,34 +57,46 @@ async function createCard(video, topic, index) {
                 data.items[0].snippet.thumbnails.high.url
               }" alt="" />
               <div id="${playerId}" class="video-iframe"></div>
+              <div class="iframe-overlay"></div>
             </div>
             <div class="description">
               <div class="profile">
-                <a href="profile.html">
-                  <img src="images/profile.jpg" alt="" />
-                </a>
+                  <img src="${channelProfile}" alt="" />
               </div>
               <div class="video-info">
                 <span class="video-title">${video.snippet.title}</span>
-                <a href="profile.html">
-                  <span class="channel-name">${
-                    video.snippet.channelTitle
-                  }</span>
-                </a>
+                  <span class="channel-name">${video.snippet.channelTitle}
+                    </span>
                 <div class="views-time">
-                  <span class="views">${formatViewLikeCount(
+                  <span class="views">
+                  ${formatViewLikeCount(
                     data.items[0].statistics.viewCount
-                  )} views</span>
+                  )} views
+                  </span>
                   <span>&middot;</span>
                   <span class="time">${formatPublishedDate(
                     data.items[0].snippet.publishedAt
-                  )}</span>
+                  )}</span> 
                 </div>
               </div>
             </div>
           `;
 
+  const profileLink = card.querySelectorAll(".profile, .channel-name");
+  profileLink.forEach((elem) => {
+    elem.addEventListener("click", (e) => {
+      e.stopPropagation();
+      redirectToChannelProfile(channelId);
+    });
+  });
+
   videoContainer.appendChild(card);
+
+  const iframe = card.querySelector(".video-iframe");
+  iframe.addEventListener("click", (e) => {
+    e.stopPropagation();
+    redirectPlayVideoPage(videoId);
+  });
 
   setTimeout(() => {
     const player = new YT.Player(playerId, {
@@ -94,6 +119,7 @@ async function createCard(video, topic, index) {
 
     players.push({ card, player });
 
+    //play pause on hover on card
     function onPlayerReady(event) {
       event.target.pauseVideo();
       card.addEventListener("mouseenter", () => player.playVideo());
@@ -104,10 +130,19 @@ async function createCard(video, topic, index) {
   }, 500);
 }
 
-function onYouTubeIframeAPIReady() {
-  videoTopics.forEach((topic) => {
-    fetchData(topic);
-  });
+//youtube api will call this when ready
+// function onYouTubeIframeAPIReady() {
+//   videoTopics.forEach((topic) => {
+//     fetchData(topic);
+//   });
+// }
+
+function redirectPlayVideoPage(videoId) {
+  window.location.href = `playVideo.html?videoId=${videoId}`;
+}
+
+function redirectToChannelProfile(channelId) {
+  window.location.href = `channelProfile.html?channelId=${channelId}`;
 }
 
 //this will format the like count as 1k,1.5k etc
@@ -154,6 +189,8 @@ function formatPublishedDate(date) {
 
   return "Just now";
 }
+
+//**************************************************************/
 
 const createBtn = document.querySelector(".create");
 const createPopUp = document.querySelector(".create-popUP");
@@ -221,3 +258,20 @@ sideBarContainer.addEventListener("click", () => {
   sideBar.classList.remove("show");
   sideBarContainer.classList.remove("showContainer");
 });
+
+function loadYouTubeAPI() {
+  const tag = document.createElement("script");
+  tag.src = "https://www.youtube.com/iframe_api";
+  const firstScriptTag = document.getElementsByTagName("script")[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+// This gets called by the YouTube API once it's loaded
+window.onYouTubeIframeAPIReady = function () {
+  console.log("YouTube API is ready.");
+  videoTopics.forEach((topic) => {
+    fetchData(topic);
+  });
+};
+
+loadYouTubeAPI(); // Call it to kick things off

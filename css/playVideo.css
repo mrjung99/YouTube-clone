@@ -11,16 +11,119 @@ body {
 /* 🔹 Base styles: Mobile-first (default for all screens) */
 .video-container {
   position: relative;
+  width: 100%;
   top: 56px;
 }
 
 .play-video {
-  padding: 20px;
+  padding: 15px;
 }
 
-.video-container .play-video img {
+.player-wrapper {
+  position: relative;
   width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
   border-radius: 10px;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.player-control {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.progressbar {
+  width: 100%;
+  text-align: center;
+}
+
+/* For Chrome, Safari, Edge, Opera */
+.progressbar input[type="range"] {
+  -webkit-appearance: none; /* Hides default styling */
+  width: 100%;
+  height: 5px; /* Adjust height as needed */
+  background: #ddd; /* Background track color */
+  border-radius: 4px; /* Round corners */
+  outline: none;
+}
+
+/* Thumb (circle slider) for Chrome, Safari, Edge, Opera */
+.progressbar input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; /* Size of the thumb */
+  height: 12px;
+  background: #ff0000; /* Red color for thumb - change as needed */
+  border-radius: 50%; /* Makes it circular */
+  cursor: pointer;
+}
+
+/* For Firefox */
+.progressbar [type="range"]::-moz-range-track {
+  width: 100%;
+  height: 8px;
+  background: #ddd;
+  border-radius: 4px;
+}
+
+.progressbar input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #ff0000;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+/* Progress fill for Chrome/Safari */
+.progressbar input[type="range"]::-webkit-slider-runnable-track {
+  height: 5px;
+  background: #ddd; /* Background color */
+}
+
+.progressbar input {
+  width: 97%;
+  height: 5px;
+  color: red;
+}
+
+.second-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.second-row i {
+  font-size: 20px;
+}
+
+.second-row .left-side {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.second-row .left-side .volume {
+  display: flex;
+  align-items: center;
+}
+
+.second-row .left-side .volume input {
+  height: 4px;
+  width: 60%;
 }
 
 .video-container .play-video .video-info .video-title {
@@ -34,7 +137,6 @@ body {
 .video-container .play-video .video-info .info {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 15px;
 }
 
@@ -93,7 +195,7 @@ body {
   color: white;
   font-size: 14px;
   font-weight: 500;
-  line-height: 36px;
+  line-height: 34px;
   cursor: pointer;
 }
 
@@ -157,7 +259,7 @@ body {
 }
 
 .like .count {
-  padding: 0 6px;
+  padding: 0 4px;
 }
 
 .dislike button {
@@ -179,13 +281,13 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 20px;
-  padding: 1px 12px;
+  padding: 1px 10px;
 }
 
 .share-button button .ph,
 .download-button button .ph {
-  padding-right: 5px;
-  font-size: 20px;
+  padding-right: 3px;
+  font-size: 18px;
 }
 
 .clip,
@@ -211,7 +313,8 @@ body {
 }
 
 .recomended {
-  padding: 30px 20px 20px 20px;
+  padding: 30px 12px 20px 12px;
+
   position: absolute;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -220,6 +323,10 @@ body {
 
 .recomended .recomended-videos {
   width: 100%;
+}
+
+.recomended .recomended-videos .video {
+  aspect-ratio: 16/9;
 }
 
 .recomended .recomended-videos .video img {
@@ -262,9 +369,25 @@ body {
   background: rgb(229, 229, 229);
 }
 
+@media (min-width: 100px) {
+  .play-video {
+    padding: 8px;
+  }
+
+  .video-container .play-video .video-info .info .like-dislike {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
 /* 🔹 Larger screens (Tablet and up) */
 @media (min-width: 542px) {
   .clip {
+    display: block;
+  }
+
+  .download {
     display: block;
   }
 }
@@ -272,6 +395,10 @@ body {
 @media (min-width: 638px) {
   .save {
     display: block;
+  }
+
+  .play-video {
+    padding: 12px;
   }
 }
 
@@ -297,6 +424,8 @@ body {
 @media (min-width: 1000px) {
   .recomended {
     display: block;
+    padding: 30px 20px;
+    margin-left: 10px;
   }
 
   .video-container {
@@ -310,7 +439,7 @@ body {
 
   .recomended {
     width: 32%;
-    margin-left: 67%;
+    margin-left: 67.5%;
     padding-left: 0px;
   }
 
