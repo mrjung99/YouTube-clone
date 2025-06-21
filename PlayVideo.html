@@ -83,6 +83,11 @@
     <div class="video-container">
       <div class="play-video">
         <div class="player-wrapper">
+          <div class="player-overlay">
+            <div class="overlay-play-pause">
+              <i class="fa-solid fa-pause"></i>
+            </div>
+          </div>
           <div id="player" class="player"></div>
           <div class="player-control">
             <div class="progressbar">
@@ -96,104 +101,36 @@
             </div>
             <div class="second-row">
               <div class="left-side">
-                <i class="fa-solid fa-pause"></i>
+                <div class="play-pause">
+                  <i id="play-pause-lower" class="fa-solid fa-pause"></i>
+                </div>
                 <i class="fa-solid fa-forward-step"></i>
                 <div class="volume">
-                  <i class="fa-solid fa-volume-low"></i>
+                  <i id="volume-icon" class="fa-solid fa-volume-low"></i>
                   <input type="range" min="0" max="100" id="volume-slider" />
+                </div>
+                <div class="duration">
+                  <p class="now">00:00</p>
+                  <span>/</span>
+                  <p class="total-duration"></p>
                 </div>
               </div>
               <div class="right-side">
                 <i class="ri-rectangle-line"></i>
-                <i class="fa-solid fa-expand"></i>
+                <i id="full-screen" class="fa-solid fa-expand"></i>
               </div>
             </div>
           </div>
         </div>
-
-        <div class="video-info">
-          <div class="video-title">
-            PMSL VLOG ! Break Day | Team @HorraEsportsOfficial | raw vlog
-          </div>
-          <div class="info">
-            <div class="channel-info">
-              <div class="profile">
-                <img src="images/profile.jpg" alt="" />
-              </div>
-              <div class="channel-followers">
-                <div class="channel-name">Hait Dami</div>
-                <div class="subscriber">35.7k subscribers</div>
-              </div>
-              <div class="subscribe">
-                <button>Subscribe</button>
-              </div>
-            </div>
-            <div class="like-dislike">
-              <div class="like-button">
-                <div class="like">
-                  <button class="like-count">
-                    <i class="ph ph-thumbs-up"></i>
-                    <span class="count">6.6k</span>
-                  </button>
-                </div>
-                <div class="dislike">
-                  <button class="">
-                    <i class="ph ph-thumbs-down"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="share-button share">
-                <button><i class="ph ph-share-fat"></i>Share</button>
-              </div>
-              <div class="download-button download">
-                <button><i class="ph ph-arrow-down"></i>Download</button>
-              </div>
-
-              <div class="download-button clip">
-                <button><i class="ph ph-scissors"></i>Clip</button>
-              </div>
-
-              <div class="download-button save">
-                <button><i class="ph ph-bookmark-simple"></i>Save</button>
-              </div>
-
-              <div class="three-dot">
-                <button>
-                  <i class="ph ph-dots-three"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="info-container"></div>
         <div class="description"></div>
         <div class="comments"></div>
       </div>
 
-      <div class="recomended">
-        <div class="recomended-videos">
-          <div class="video">
-            <img src="images/Screenshot (2).png" alt="" />
-          </div>
-          <div class="recomended-video-info">
-            <div class="channel">
-              <div class="title">
-                [NP] 2025 PMSL CSA Spring - Survival Stage Day 2
-              </div>
-              <span class="channel-name">Hait Dami</span>
-              <div class="channel-info">
-                <span class="views">35k views</span>
-                <span>&middot;</span>
-                <span class="time">1 year ago</span>
-              </div>
-            </div>
-            <div class="dot-icon">
-              <i class="ph ph-dots-three-vertical"></i>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="recomended"></div>
     </div>
 
+    <script src="./js/utilies.js"></script>
     <script src="./js/playVideo.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
   </body>

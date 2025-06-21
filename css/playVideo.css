@@ -25,7 +25,6 @@ body {
   padding-top: 56.25%; /* 16:9 Aspect Ratio */
   border-radius: 10px;
   overflow: hidden;
-  background-color: #000;
 }
 
 .player {
@@ -36,11 +35,42 @@ body {
   height: 100%;
 }
 
+.player-overlay {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.player-overlay .overlay-play-pause {
+  background-color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+}
+
+.player-overlay .overlay-play-pause i {
+  font-size: 27px;
+}
+
 .player-control {
   position: absolute;
   left: 0;
   bottom: 0;
+  z-index: 100;
   width: 100%;
+  background: inherit;
 }
 
 .progressbar {
@@ -48,53 +78,14 @@ body {
   text-align: center;
 }
 
-/* For Chrome, Safari, Edge, Opera */
-.progressbar input[type="range"] {
-  -webkit-appearance: none; /* Hides default styling */
-  width: 100%;
-  height: 5px; /* Adjust height as needed */
-  background: #ddd; /* Background track color */
-  border-radius: 4px; /* Round corners */
-  outline: none;
-}
-
-/* Thumb (circle slider) for Chrome, Safari, Edge, Opera */
-.progressbar input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 12px; /* Size of the thumb */
-  height: 12px;
-  background: #ff0000; /* Red color for thumb - change as needed */
-  border-radius: 50%; /* Makes it circular */
-  cursor: pointer;
-}
-
-/* For Firefox */
-.progressbar [type="range"]::-moz-range-track {
-  width: 100%;
-  height: 8px;
-  background: #ddd;
-  border-radius: 4px;
-}
-
-.progressbar input[type="range"]::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  background: #ff0000;
-  border-radius: 50%;
-  cursor: pointer;
-  border: none;
-}
-
-/* Progress fill for Chrome/Safari */
-.progressbar input[type="range"]::-webkit-slider-runnable-track {
-  height: 5px;
-  background: #ddd; /* Background color */
-}
-
 .progressbar input {
   width: 97%;
   height: 5px;
+  background: transparent;
   color: red;
+  cursor: pointer;
+  border: none;
+  outline: none;
 }
 
 .second-row {
@@ -102,12 +93,12 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  color: white;
-  cursor: pointer;
+  color: rgb(255, 255, 255);
 }
 
 .second-row i {
   font-size: 20px;
+  cursor: pointer;
 }
 
 .second-row .left-side {
@@ -119,11 +110,28 @@ body {
 .second-row .left-side .volume {
   display: flex;
   align-items: center;
+  transition: 0.5s ease;
+  width: 30%;
 }
 
 .second-row .left-side .volume input {
   height: 4px;
-  width: 60%;
+  cursor: pointer;
+  display: none;
+  width: 100%;
+}
+
+.second-row .left-side .duration {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+}
+
+.second-row .right-side {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .video-container .play-video .video-info .video-title {

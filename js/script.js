@@ -43,7 +43,6 @@ async function createCard(video, topic, index) {
   const channelData = await channel.json();
 
   const channelProfile = channelData.items[0].snippet.thumbnails.default.url;
-  console.log("video content", data);
 
   const card = document.createElement("div");
   card.className = "card";
@@ -117,6 +116,8 @@ async function createCard(video, topic, index) {
       },
     });
 
+    console.log(player);
+
     players.push({ card, player });
 
     //play pause on hover on card
@@ -130,15 +131,8 @@ async function createCard(video, topic, index) {
   }, 500);
 }
 
-//youtube api will call this when ready
-// function onYouTubeIframeAPIReady() {
-//   videoTopics.forEach((topic) => {
-//     fetchData(topic);
-//   });
-// }
-
 function redirectPlayVideoPage(videoId) {
-  window.location.href = `playVideo.html?videoId=${videoId}`;
+  window.location.href = `PlayVideo.html?videoId=${videoId}`;
 }
 
 function redirectToChannelProfile(channelId) {
@@ -167,13 +161,11 @@ function formatPublishedDate(date) {
   const year = month / 12;
 
   if (year >= 1)
-    return (
-      year.toFixed(1) + " " + "year" + (year >= 2 ? "s" : "") + " " + "ago"
-    );
+    return year.toFixed() + " " + "year" + (year >= 2 ? "s" : "") + " " + "ago";
 
   if (month >= 1)
     return (
-      month.toFixed(1) + " " + "month" + (month >= 2 ? "s" : "") + " " + "ago"
+      month.toFixed() + " " + "month" + (month >= 2 ? "s" : "") + " " + "ago"
     );
 
   if (day >= 1)
@@ -274,4 +266,4 @@ window.onYouTubeIframeAPIReady = function () {
   });
 };
 
-loadYouTubeAPI(); // Call it to kick things off
+loadYouTubeAPI();
