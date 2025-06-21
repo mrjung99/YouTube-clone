@@ -1,10 +1,21 @@
-// const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
+const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
 
 //CODE ADDICT NEPAL
-const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
+// const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
 
 const videoContainer = document.querySelector(".container");
-const videoTopics = ["sports"];
+const videoTopics = [
+  "sports",
+  "programming",
+  "music",
+  "dance",
+  "education",
+  "esport",
+  "cricket",
+  "football",
+  "bike",
+  "race",
+];
 const maxVideos = 2;
 const players = [];
 
@@ -63,7 +74,10 @@ async function createCard(video, topic, index) {
                   <img src="${channelProfile}" alt="" />
               </div>
               <div class="video-info">
-                <span class="video-title">${video.snippet.title}</span>
+                <span class="video-title">${truncateString(
+                  video.snippet.title,
+                  60
+                )}</span>
                   <span class="channel-name">${video.snippet.channelTitle}
                     </span>
                 <div class="views-time">
@@ -260,7 +274,6 @@ function loadYouTubeAPI() {
 
 // This gets called by the YouTube API once it's loaded
 window.onYouTubeIframeAPIReady = function () {
-  console.log("YouTube API is ready.");
   videoTopics.forEach((topic) => {
     fetchData(topic);
   });

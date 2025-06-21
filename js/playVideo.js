@@ -1,4 +1,7 @@
-const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
+// const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
+
+//mrjung
+const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
 
 let player;
 let duration = 0;
@@ -180,7 +183,7 @@ function formatTime(duration) {
 
 // this will add seek to funcationality to the player
 
-//this will maek visible volume progress bar when hover over it
+//this will make visible volume progress bar when hover over on it
 const volumeContainer = document.querySelector(".volume");
 const volumeBar = document.getElementById("volume-slider");
 
@@ -313,9 +316,12 @@ async function renderRecomendedVideo(statData) {
           <div class="recomended-video-info">
             <div class="channel">
               <div class="title">
-               ${video.snippet.title}
+               ${truncateString(video.snippet.title, 40)}
               </div>
-              <span class="channel-name">${video.snippet.channelTitle}</span>
+              <span class="channel-name">${truncateString(
+                video.snippet.channelTitle,
+                40
+              )}</span>
               <div class="channel-info">
                 <span class="views">${formatViewLikeCount(
                   video.statistics.viewCount
