@@ -1,7 +1,7 @@
 // const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
 
 //mrjung
-const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
+// const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
 
 let player;
 let duration = 0;
@@ -181,8 +181,6 @@ function formatTime(duration) {
   }
 }
 
-// this will add seek to funcationality to the player
-
 //this will make visible volume progress bar when hover over on it
 const volumeContainer = document.querySelector(".volume");
 const volumeBar = document.getElementById("volume-slider");
@@ -193,6 +191,68 @@ volumeContainer.addEventListener("mouseenter", () => {
 
 volumeContainer.addEventListener("mouseleave", () => {
   volumeBar.style.display = "none";
+});
+
+document.getElementById("more-less").addEventListener("click", () => {
+  const descBox = document.querySelector(".description-text");
+  const btn = document.getElementById("more-less");
+  descBox.classList.toggle("expand");
+  if (descBox.classList.contains("expand")) {
+    btn.textContent = "Show less";
+  } else {
+    btn.textContent = "Show more";
+  }
+});
+
+document.getElementById("comment").addEventListener("input", (e) => {
+  const btn = document.getElementById("commentBtn");
+  console.log(e.target.value);
+  if (e.target.value != "") {
+    btn.disabled = false;
+    btn.style.cursor = "pointer";
+    btn.style.background = "#0556bf";
+    btn.style.color = "#fffffb";
+  } else {
+    BroadcastChannel.disabled = true;
+    btn.style.cursor = "auto";
+    btn.style.background = "rgb(241, 241, 241)";
+    btn.style.color = "rgb(15,15,15)";
+  }
+});
+
+document.getElementById("comment").addEventListener("focus", () => {
+  document.querySelector(".btn-emoji").style.display = "flex";
+});
+
+document.getElementById("cancel").addEventListener("click", () => {
+  document.querySelector(".btn-emoji").style.display = "none";
+});
+
+document.getElementById("reply").addEventListener("click", () => {
+  document.querySelector(".replier").style.display = "flex";
+  document.querySelector(".reply-comment").focus();
+  document.querySelector(".reply-comment").style.borderBottom =
+    "1px solid black";
+});
+
+document.querySelector(".cancel-reply").addEventListener("click", () => {
+  document.querySelector(".replier").style.display = "none";
+});
+
+document.querySelector(".reply-comment").addEventListener("input", (e) => {
+  const btn = document.querySelector(".reply");
+  console.log(e.target.value);
+  if (e.target.value != "") {
+    btn.disabled = false;
+    btn.style.cursor = "pointer";
+    btn.style.background = "#0556bf";
+    btn.style.color = "#fffffb";
+  } else {
+    BroadcastChannel.disabled = true;
+    btn.style.cursor = "auto";
+    btn.style.background = "rgb(241, 241, 241)";
+    btn.style.color = "rgb(15,15,15)";
+  }
 });
 
 async function getData() {
@@ -225,8 +285,12 @@ async function getData() {
 }
 
 async function insertInfo(data, channelData) {
+  console.log("data", data);
+  console.log("channeldata", channelData);
   const viewsCount = data.items[0].statistics.viewCount;
+  const videoDescriptin = data.items[0].snippet.description;
   const infoContainer = document.querySelector(".info-container");
+  const descriptionContainer = document.querySelector(".description-container");
   infoContainer.innerHTML = `
           <div class="video-info">
             <div class="video-title">
@@ -291,6 +355,44 @@ async function insertInfo(data, channelData) {
             </div>
           </div>
         `;
+  descriptionContainer.innerHTML = `
+          <div class="description-text">
+            <div class="desc-top">
+              <p>${
+                data.items[0].statistics.viewCount
+              }views${"  "}${formatPublishedDate(
+    data.items[0].snippet.publishedAt
+  )}</p>
+              <p>#pubg #pubgmobile #pubgasia</p>
+            </div>
+            <p>
+              ${data.items[0].snippet.description}
+            </p>
+            <div class="info-box">
+              <div class="info-channel">
+                <div class="profile">
+                  <img src="${
+                    channelData.items[0].snippet.thumbnails.high.url
+                  }" alt="" />
+                </div>
+                <div class="content">
+                  <p>${data.items[0].snippet.channelTitle}</p>
+                  <p>${formatViewLikeCount(
+                    channelData.items[0].statistics.subscriberCount
+                  )}</p>
+                </div>
+              </div>
+              <div class="button">
+                <button class="videos">
+                  <i class="ri-video-line"></i>Videos
+                </button>
+                <button class="about">
+                  <i class="ri-file-user-line"></i>About
+                </button>
+              </div>
+            </div>
+          </div>
+  `;
 }
 
 async function renderRecomendedVideo(statData) {
@@ -316,12 +418,9 @@ async function renderRecomendedVideo(statData) {
           <div class="recomended-video-info">
             <div class="channel">
               <div class="title">
-               ${truncateString(video.snippet.title, 40)}
+               ${video.snippet.title}
               </div>
-              <span class="channel-name">${truncateString(
-                video.snippet.channelTitle,
-                40
-              )}</span>
+              <span class="channel-name">${video.snippet.channelTitle}</span>
               <div class="channel-info">
                 <span class="views">${formatViewLikeCount(
                   video.statistics.viewCount

@@ -1,6 +1,6 @@
-const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
+// const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
 
-//CODE ADDICT NEPAL
+//second api key
 // const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
 
 const videoContainer = document.querySelector(".container");
@@ -16,7 +16,7 @@ const videoTopics = [
   "bike",
   "race",
 ];
-const maxVideos = 2;
+const maxVideos = 1;
 const players = [];
 
 async function fetchData(topic) {
@@ -74,10 +74,7 @@ async function createCard(video, topic, index) {
                   <img src="${channelProfile}" alt="" />
               </div>
               <div class="video-info">
-                <span class="video-title">${truncateString(
-                  video.snippet.title,
-                  60
-                )}</span>
+                <span class="video-title">${video.snippet.title}</span>
                   <span class="channel-name">${video.snippet.channelTitle}
                     </span>
                 <div class="views-time">
@@ -213,6 +210,12 @@ createBtn.addEventListener("click", (e) => {
   notificationBox.classList.remove("show");
 });
 
+document.getElementById("upload").addEventListener("click", (e) => {
+  e.stopPropagation();
+  createPopUp.classList.toggle("show");
+  notificationBox.classList.remove("show");
+});
+
 bell.addEventListener("click", (e) => {
   e.stopPropagation();
   notificationBox.classList.toggle("show");
@@ -263,6 +266,28 @@ window.addEventListener("resize", () => {
 sideBarContainer.addEventListener("click", () => {
   sideBar.classList.remove("show");
   sideBarContainer.classList.remove("showContainer");
+});
+
+document.getElementById("search-icon2").addEventListener("click", () => {
+  document.querySelector(".navBar").classList.toggle("center");
+  document.querySelector(".back").style.display = "block";
+  document.querySelector(".nav-middle").classList.toggle("middle");
+
+  document.querySelector(".search").classList.toggle("show");
+  document.querySelector(".nav-left").style.display = "none";
+  document.querySelector(".nav-right").style.display = "none";
+  document.getElementById("search-icon2").classList.toggle("hide");
+});
+
+document.querySelector(".back").addEventListener("click", () => {
+  document.querySelector(".navBar").classList.toggle("center");
+  document.querySelector(".back").style.display = "none";
+  document.querySelector(".nav-middle").classList.toggle("middle");
+
+  document.querySelector(".search").classList.toggle("show");
+  document.querySelector(".nav-left").style.display = "flex";
+  document.querySelector(".nav-right").style.display = "flex";
+  document.getElementById("search-icon2").classList.toggle("hide");
 });
 
 function loadYouTubeAPI() {

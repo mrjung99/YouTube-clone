@@ -123,8 +123,79 @@
           </div>
         </div>
         <div class="info-container"></div>
-        <div class="description"></div>
-        <div class="comments"></div>
+        <div class="description-container">
+          <button id="more-less">Show more</button>
+        </div>
+
+        <div class="comments-container">
+          <div class="top">
+            <p>1 comment</p>
+            <p><i class="ri-sort-asc"></i>Sort by</p>
+          </div>
+
+          <div class="commenter">
+            <div class="profile">
+              <img src="./images/profile.jpg" alt="" />
+            </div>
+            <div class="write-comment">
+              <input id="comment" type="text" placeholder="Add a comment..." />
+              <div class="btn-emoji">
+                <i class="fa-regular fa-face-laugh-beam"></i>
+                <div class="button">
+                  <button id="cancel">Cancel</button>
+                  <button id="commentBtn" disabled>Comment</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comment">
+            <div class="profile">
+              <img src="./images/profile.jpg" alt="" />
+            </div>
+            <div class="details">
+              <div class="user-detail">
+                <span id="username">@crocoblock</span
+                ><span id="time">3 days ago</span>
+              </div>
+              <div class="comment-section">
+                <p>Thank you! we are always happy to help</p>
+                <i class="ri-more-2-fill"></i>
+              </div>
+              <div class="comment-action">
+                <div>
+                  <i class="ri-thumb-up-line"></i><span id="count">1</span>
+                </div>
+
+                <i class="ri-thumb-down-line"></i>
+                <button id="reply">Reply</button>
+              </div>
+              <div id="replier" class="commenter replier">
+                <div class="profile">
+                  <img src="./images/profile.jpg" alt="" />
+                </div>
+                <div class="write-comment">
+                  <input
+                    class="reply-comment"
+                    id="comment"
+                    type="text"
+                    placeholder=""
+                    autofocus
+                  />
+                  <div class="btn-emoji">
+                    <i class="fa-regular fa-face-laugh-beam"></i>
+                    <div class="button">
+                      <button class="cancel-reply" id="cancel">Cancel</button>
+                      <button class="reply" id="commentBtn" disabled>
+                        Reply
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="recomended"></div>
