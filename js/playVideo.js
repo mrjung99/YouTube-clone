@@ -1,7 +1,7 @@
 // const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
 
 //mrjung
-// const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
+const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
 
 let player;
 let duration = 0;
@@ -120,12 +120,6 @@ function updateProgress() {
   updateSliderFill(seekBar);
 }
 
-function updateSliderFill(slider) {
-  const percentage =
-    ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
-  slider.style.background = `linear-gradient(to right, #ffffff${percentage}%,rgba(255,255,255,0.1)${percentage}%)`;
-}
-
 function handleVolume(e) {
   const btn = document.getElementById("volume-icon");
   const newVolume = parseInt(e.target.value);
@@ -148,7 +142,11 @@ function handleSeek(e) {
   updateSliderFill(seekBar);
 }
 
-function updateSliderFill() {}
+function updateSliderFill(slider) {
+  const percentage =
+    ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+  slider.style.background = `linear-gradient(to right, #ffffff${percentage}%,rgba(255,255,255,0.1)${percentage}%)`;
+}
 
 function toggleFullScreen() {
   const container = document.querySelector(".player-wrapper");
@@ -193,68 +191,6 @@ volumeContainer.addEventListener("mouseleave", () => {
   volumeBar.style.display = "none";
 });
 
-document.getElementById("more-less").addEventListener("click", () => {
-  const descBox = document.querySelector(".description-text");
-  const btn = document.getElementById("more-less");
-  descBox.classList.toggle("expand");
-  if (descBox.classList.contains("expand")) {
-    btn.textContent = "Show less";
-  } else {
-    btn.textContent = "Show more";
-  }
-});
-
-document.getElementById("comment").addEventListener("input", (e) => {
-  const btn = document.getElementById("commentBtn");
-  console.log(e.target.value);
-  if (e.target.value != "") {
-    btn.disabled = false;
-    btn.style.cursor = "pointer";
-    btn.style.background = "#0556bf";
-    btn.style.color = "#fffffb";
-  } else {
-    BroadcastChannel.disabled = true;
-    btn.style.cursor = "auto";
-    btn.style.background = "rgb(241, 241, 241)";
-    btn.style.color = "rgb(15,15,15)";
-  }
-});
-
-document.getElementById("comment").addEventListener("focus", () => {
-  document.querySelector(".btn-emoji").style.display = "flex";
-});
-
-document.getElementById("cancel").addEventListener("click", () => {
-  document.querySelector(".btn-emoji").style.display = "none";
-});
-
-document.getElementById("reply").addEventListener("click", () => {
-  document.querySelector(".replier").style.display = "flex";
-  document.querySelector(".reply-comment").focus();
-  document.querySelector(".reply-comment").style.borderBottom =
-    "1px solid black";
-});
-
-document.querySelector(".cancel-reply").addEventListener("click", () => {
-  document.querySelector(".replier").style.display = "none";
-});
-
-document.querySelector(".reply-comment").addEventListener("input", (e) => {
-  const btn = document.querySelector(".reply");
-  console.log(e.target.value);
-  if (e.target.value != "") {
-    btn.disabled = false;
-    btn.style.cursor = "pointer";
-    btn.style.background = "#0556bf";
-    btn.style.color = "#fffffb";
-  } else {
-    BroadcastChannel.disabled = true;
-    btn.style.cursor = "auto";
-    btn.style.background = "rgb(241, 241, 241)";
-    btn.style.color = "rgb(15,15,15)";
-  }
-});
-
 async function getData() {
   const searchContentDetailUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videosId}&key=${API_KEY}&part=snippet,contentDetails,statistics,status`;
   const response = await fetch(searchContentDetailUrl);
@@ -285,12 +221,9 @@ async function getData() {
 }
 
 async function insertInfo(data, channelData) {
-  console.log("data", data);
-  console.log("channeldata", channelData);
-  const viewsCount = data.items[0].statistics.viewCount;
-  const videoDescriptin = data.items[0].snippet.description;
   const infoContainer = document.querySelector(".info-container");
-  const descriptionContainer = document.querySelector(".description-container");
+  const descriptionContainer = document.querySelector(".desc-container");
+
   infoContainer.innerHTML = `
           <div class="video-info">
             <div class="video-title">
@@ -319,15 +252,15 @@ async function insertInfo(data, channelData) {
                 <div class="like-button">
                   <div class="like">
                     <button class="like-count">
-                      <i class="ph ph-thumbs-up"></i>
-                      <span class="count">${formatViewLikeCount(
+                     <i id="like-video" class="ri-thumb-up-line"></i>
+                      <span class="videoLike-count">${formatViewLikeCount(
                         data.items[0].statistics.likeCount
                       )}</span>
                     </button>
                   </div>
                   <div class="dislike">
                     <button class="">
-                      <i class="ph ph-thumbs-down"></i>
+                      <i id="dislike-video" class="ri-thumb-down-line"></i>
                     </button>
                   </div>
                 </div>
@@ -355,17 +288,18 @@ async function insertInfo(data, channelData) {
             </div>
           </div>
         `;
+
   descriptionContainer.innerHTML = `
           <div class="description-text">
             <div class="desc-top">
-              <p>${
+              <p>${formatViewLikeCount(
                 data.items[0].statistics.viewCount
-              }views${"  "}${formatPublishedDate(
+              )} views${"  "}${formatPublishedDate(
     data.items[0].snippet.publishedAt
   )}</p>
-              <p>#pubg #pubgmobile #pubgasia</p>
+              <p> </p>
             </div>
-            <p>
+            <p class="desc-paragraph">
               ${data.items[0].snippet.description}
             </p>
             <div class="info-box">
@@ -393,6 +327,38 @@ async function insertInfo(data, channelData) {
             </div>
           </div>
   `;
+  //this will hide the show more/less button of the description container if it has <=1 line
+  hideButton();
+
+  document.getElementById("like-video").addEventListener("click", () => {
+    const likeCount = document.querySelector(".videoLike-count");
+    const btn = document.getElementById("like-video");
+    toggleLikeDislikeBtn(btn, "like", likeCount, "like-video", "dislike-video");
+  });
+
+  document.getElementById("dislike-video").addEventListener("click", () => {
+    const likeCount = document.querySelector(".videoLike-count");
+    const btn = document.getElementById("dislike-video");
+    toggleLikeDislikeBtn(
+      btn,
+      "dislike",
+      likeCount,
+      "like-video",
+      "dislike-video"
+    );
+  });
+}
+
+function hideButton() {
+  const paragraph = document.querySelector(".desc-paragraph");
+  const lineHeight = parseInt(getComputedStyle(paragraph).lineHeight);
+  const totalHeight = paragraph.offsetHeight;
+  const lineCount = totalHeight / lineHeight;
+  const btn = document.getElementById("more-less");
+
+  if (lineCount <= 1) {
+    btn.style.display = "none";
+  }
 }
 
 async function renderRecomendedVideo(statData) {
@@ -439,6 +405,127 @@ async function renderRecomendedVideo(statData) {
 
     videoContainer.appendChild(videoDiv);
   });
+}
+
+document.getElementById("more-less").addEventListener("click", () => {
+  const descBox = document.querySelector(".description-text");
+  const btn = document.getElementById("more-less");
+  descBox.classList.toggle("expand");
+  if (descBox.classList.contains("expand")) {
+    btn.textContent = "Show less";
+  } else {
+    btn.textContent = "Show more";
+  }
+});
+
+document.getElementById("comment").addEventListener("input", (e) => {
+  const btn = document.getElementById("commentBtn");
+  addBlueBackgroundToBtn(btn, e);
+});
+
+document.querySelector(".reply-comment").addEventListener("input", (e) => {
+  const btn = document.querySelector(".reply");
+  addBlueBackgroundToBtn(btn, e);
+});
+
+function addBlueBackgroundToBtn(btn, e) {
+  if (e.target.value != "") {
+    btn.disabled = false;
+    btn.style.cursor = "pointer";
+    btn.style.background = "#0556bf";
+    btn.style.color = "#fffffb";
+  } else {
+    btn.disabled = true;
+    btn.style.cursor = "auto";
+    btn.style.background = "rgb(241, 241, 241)";
+    btn.style.color = "rgb(15,15,15)";
+  }
+}
+
+document.getElementById("comment").addEventListener("click", () => {
+  document.querySelector(".btn-emoji").style.display = "flex";
+  document.getElementById("comment").style.borderBottom = "1px solid black";
+});
+
+document.getElementById("cancel").addEventListener("click", () => {
+  document.querySelector(".btn-emoji").style.display = "none";
+});
+
+document.getElementById("reply").addEventListener("click", () => {
+  document.querySelector(".replier").style.display = "flex";
+  document.querySelector(".reply-comment").focus();
+  document.querySelector(".reply-comment").style.borderBottom =
+    "1px solid black";
+});
+
+document.querySelector(".cancel-reply").addEventListener("click", () => {
+  document.querySelector(".replier").style.display = "none";
+});
+
+//like and dislike comment
+document.getElementById("like-comment").addEventListener("click", () => {
+  const likeCount = document.getElementById("commentLike-count");
+  const btn = document.getElementById("like-comment");
+  toggleLikeDislikeBtn(
+    btn,
+    "like",
+    likeCount,
+    "like-comment",
+    "dislike-comment"
+  );
+});
+
+document.getElementById("dislike-comment").addEventListener("click", () => {
+  const likeCount = document.getElementById("commentLike-count");
+  const btn = document.getElementById("dislike-comment");
+  toggleLikeDislikeBtn(
+    btn,
+    "dislike",
+    likeCount,
+    "like-comment",
+    "dislike-comment"
+  );
+});
+
+function toggleLikeDislikeBtn(btn, action, likeCount, likeId, dislikeId) {
+  const likeValue = parseAbbreviatedNumber(likeCount.textContent);
+
+  if (action === "like") {
+    const disLikeBtn = document.getElementById(dislikeId);
+    if (btn.classList.contains("ri-thumb-up-line")) {
+      btn.classList.remove("ri-thumb-up-line");
+      btn.classList.add("ri-thumb-up-fill");
+      likeCount.innerText = formatViewLikeCount(likeValue + 1);
+
+      if (disLikeBtn.classList.contains("ri-thumb-down-fill")) {
+        disLikeBtn.classList.remove("ri-thumb-down-fill");
+        disLikeBtn.classList.add("ri-thumb-down-line");
+      }
+    } else {
+      btn.classList.remove("ri-thumb-up-fill");
+      btn.classList.add("ri-thumb-up-line");
+
+      const newCount = likeValue - 1;
+      likeCount.innerText = newCount === 0 ? "" : formatViewLikeCount(newCount);
+    }
+  } else {
+    const likeBtn = document.getElementById(likeId);
+    if (btn.classList.contains("ri-thumb-down-line")) {
+      btn.classList.remove("ri-thumb-down-line");
+      btn.classList.add("ri-thumb-down-fill");
+
+      if (likeBtn.classList.contains("ri-thumb-up-fill")) {
+        likeBtn.classList.remove("ri-thumb-up-fill");
+        likeBtn.classList.add("ri-thumb-up-line");
+        const newCount = likeValue - 1;
+        likeCount.innerText =
+          newCount === 0 ? "" : formatViewLikeCount(newCount);
+      }
+    } else {
+      btn.classList.remove("ri-thumb-down-fill");
+      btn.classList.add("ri-thumb-down-line");
+    }
+  }
 }
 
 getData();
