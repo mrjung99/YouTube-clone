@@ -66,7 +66,7 @@ function onPlayerReady(event) {
     .addEventListener("click", toggleFullScreen);
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === " ") togglePlayPauseLower;
+    if (e.key === " ") togglePlayPause;
     if (e.key === "ArrowRight")
       player.seekTo(player.getCurrentDuration() + 5, true);
     if (e.key === "ArrowLeft")
@@ -221,6 +221,8 @@ async function getData() {
 }
 
 async function insertInfo(data, channelData) {
+  console.log("chanel data", channelData);
+
   const infoContainer = document.querySelector(".info-container");
   const descriptionContainer = document.querySelector(".desc-container");
 
@@ -327,6 +329,15 @@ async function insertInfo(data, channelData) {
             </div>
           </div>
   `;
+
+  const commentCount = data.items[0].statistics.commentCount;
+  console.log("comment count", commentCount);
+
+  document.querySelector(".commentCount").innerText =
+    commentCount > 1
+      ? commentCount + " " + "Comments"
+      : commentCount + " " + "Comment";
+
   //this will hide the show more/less button of the description container if it has <=1 line
   hideButton();
 
@@ -424,73 +435,77 @@ document.getElementById("more-less").addEventListener("click", () => {
   }
 });
 
-document.querySelector(".comment").addEventListener("input", (e) => {
-  const btn = document.getElementById("commentBtn");
-  addBlueBackgroundToBtn(btn, e);
-});
-
 //post comment
-document.getElementById("commentBtn").addEventListener("click", (e) => {
-  const commentContainer = document.querySelector(".display-comment");
-  const comment = document.querySelector(".comment").value.trim();
 
-  const commentBody = `
-                              
-          <div class="comment">
-            <div class="profile">
-              <img src="./images/profile.jpg" alt="" />
-            </div>
-            <div class="details">
-              <div class="user-detail">
-                <span id="username">@crocoblock</span
-                ><span id="time">3 days ago</span>
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("commentBtn")) {
+    const commentContainer = document.querySelector(".display-comment");
+    const comment = document.querySelector(".comment").value.trim();
+
+    const commentBody = `
+                                
+            <div class="comment">
+              <div class="profile">
+                <img src="./images/profile.jpg" alt="" />
               </div>
-              <div class="comment-section">
-                <p>${comment}</p>
-                <i class="ri-more-2-fill"></i>
-              </div>
-              <div class="comment-action">
-                <div>
-                  <i id="like-comment" class="like-comment ri-thumb-up-line"></i
-                  ><span class="commentLike-count" id="commentLike-count"></span>
+              <div class="details">
+                <div class="user-detail">
+                  <span id="username">@crocoblock</span
+                  ><span id="time">3 days ago</span>
                 </div>
-                <i id="dislike-comment" class="dislike-comment ri-thumb-down-line"></i>
-                <button class="replyBtn" id="reply">Reply</button>
-              </div>
-              <div id="replier" class="commenter replier">
-                <div class="profile">
-                  <img src="./images/profile.jpg" alt="" />
+                <div class="comment-section">
+                  <p>${comment}</p>
+                  <i class="ri-more-2-fill"></i>
                 </div>
-                <div class="write-comment">
-                  <input
-                    class="reply-comment"
-                    id="comment"
-                    type="text"
-                    placeholder=""
-                    autocomplete="off"
-                  />
-                  <div class="btn-emoji">
-                    <i class="fa-regular fa-face-laugh-beam"></i>
-                    <div class="button">
-                      <button class="cancel-reply" id="cancel">Cancel</button>
-                      <button class="reply" id="commentBtn" disabled>
-                        Reply
-                      </button>
+                <div class="comment-action">
+                  <div>
+                    <i id="like-comment" class="like-comment ri-thumb-up-line"></i
+                    ><span class="commentLike-count" id="commentLike-count"></span>
+                  </div>
+                  <i id="dislike-comment" class="dislike-comment ri-thumb-down-line"></i>
+                  <button class="replyBtn" id="reply">Reply</button>
+                </div>
+                <div id="replier" class="commenter replier">
+                  <div class="profile">
+                    <img src="./images/profile.jpg" alt="" />
+                  </div>
+                  <div class="write-comment">
+                    <input
+                      class="reply-comment"
+                      id="comment"
+                      type="text"
+                      placeholder=""
+                      autocomplete="off"
+                    />
+                    <div class="btn-emoji">
+                      <i class="fa-regular fa-face-laugh-beam"></i>
+                      <div class="button">
+                        <button class="cancel-reply" id="cancel">Cancel</button>
+                        <button class="reply" id="commentBtn" disabled>
+                          Reply
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-  `;
+    `;
 
-  commentContainer.innerHTML += commentBody;
-  document.querySelector(".comment").value = "";
-  addBlueBackgroundToBtn(e.target, e);
+    commentContainer.innerHTML += commentBody;
+    document.querySelector(".comment").value = "";
+    addBlueBackgroundToBtn(e.target, e);
+  }
 });
 
 document.addEventListener("input", (e) => {
-  e.stopPropagation();
+  if (e.target.classList.contains("comment")) {
+    const btn = e.target.closest(".write-comment").querySelector(".commentBtn");
+    addBlueBackgroundToBtn(btn, e);
+  }
+});
+
+document.addEventListener("input", (e) => {
   if (e.target.classList.contains("reply-comment")) {
     const btn = e.target.closest(".write-comment").querySelector(".reply");
     addBlueBackgroundToBtn(btn, e);
@@ -520,8 +535,13 @@ document.addEventListener("click", (e) => {
   }
 });
 
-document.getElementById("cancel").addEventListener("click", () => {
-  document.querySelector(".btn-emoji").style.display = "none";
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("cancel")) {
+    document.querySelector(".btn-emoji").style.display = "none";
+    document.querySelector(".comment").value = "";
+    document.querySelector(".comment").style.borderBottom =
+      "1px solid rgb(229,229,229)";
+  }
 });
 
 document.addEventListener("click", (e) => {

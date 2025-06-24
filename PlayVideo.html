@@ -130,7 +130,7 @@
 
         <div class="comments-container">
           <div class="top">
-            <p>1 comment</p>
+            <p class="commentCount"></p>
             <p><i class="ri-sort-asc"></i>Sort by</p>
           </div>
 
@@ -148,13 +148,14 @@
               <div class="btn-emoji">
                 <i class="fa-regular fa-face-laugh-beam"></i>
                 <div class="button">
-                  <button id="cancel">Cancel</button>
-                  <button id="commentBtn" disabled>Comment</button>
+                  <button class="cancel" id="cancel">Cancel</button>
+                  <button class="commentBtn" id="commentBtn" disabled>
+                    Comment
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-
           <div class="display-comment"></div>
         </div>
       </div>
