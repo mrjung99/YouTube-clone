@@ -1,7 +1,7 @@
 // const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
 
 //mrjung
-// const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
+const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
 
 let player;
 let duration = 0;
@@ -333,7 +333,13 @@ async function insertInfo(data, channelData) {
   document.getElementById("like-video").addEventListener("click", () => {
     const likeCount = document.querySelector(".videoLike-count");
     const btn = document.getElementById("like-video");
-    toggleLikeDislikeBtn(btn, "like", likeCount, "like-video", "dislike-video");
+    toggleLikeDislikeBtn(
+      btn,
+      "like",
+      likeCount,
+      "#like-video",
+      "#dislike-video"
+    );
   });
 
   document.getElementById("dislike-video").addEventListener("click", () => {
@@ -343,8 +349,8 @@ async function insertInfo(data, channelData) {
       btn,
       "dislike",
       likeCount,
-      "like-video",
-      "dislike-video"
+      "#like-video",
+      "#dislike-video"
     );
   });
 }
@@ -573,9 +579,19 @@ function toggleLikeDislikeBtn(
   likeSelector,
   dislikeSelector
 ) {
-  const comment = btn.closest(".comment");
-  const disLikeBtn = comment.querySelector(dislikeSelector);
-  const likeBtn = comment.querySelector(likeSelector);
+  let likeBtn = "",
+    dislikeBtn = "";
+
+  if (likeSelector.charAt(0) === "#") {
+    const buttons = btn.closest(".like-button");
+    dislikeBtn = buttons.querySelector(dislikeSelector);
+    likeBtn = buttons.querySelector(likeSelector);
+  } else {
+    const commentBox = btn.closest(".comment");
+    dislikeBtn = commentBox.querySelector(dislikeSelector);
+    likeBtn = commentBox.querySelector(likeSelector);
+  }
+
   const likeValue = parseAbbreviatedNumber(likeCount.textContent);
 
   if (action === "like") {
@@ -584,9 +600,9 @@ function toggleLikeDislikeBtn(
       btn.classList.add("ri-thumb-up-fill");
       likeCount.innerText = formatViewLikeCount(likeValue + 1);
 
-      if (disLikeBtn.classList.contains("ri-thumb-down-fill")) {
-        disLikeBtn.classList.remove("ri-thumb-down-fill");
-        disLikeBtn.classList.add("ri-thumb-down-line");
+      if (dislikeBtn.classList.contains("ri-thumb-down-fill")) {
+        dislikeBtn.classList.remove("ri-thumb-down-fill");
+        dislikeBtn.classList.add("ri-thumb-down-line");
       }
     } else {
       btn.classList.remove("ri-thumb-up-fill");
