@@ -1,7 +1,7 @@
 // const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
 
 //mrjung
-const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
+// const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
 
 let player;
 let duration = 0;
@@ -418,14 +418,77 @@ document.getElementById("more-less").addEventListener("click", () => {
   }
 });
 
-document.getElementById("comment").addEventListener("input", (e) => {
+document.querySelector(".comment").addEventListener("input", (e) => {
   const btn = document.getElementById("commentBtn");
   addBlueBackgroundToBtn(btn, e);
 });
 
-document.querySelector(".reply-comment").addEventListener("input", (e) => {
-  const btn = document.querySelector(".reply");
-  addBlueBackgroundToBtn(btn, e);
+//post comment
+document.getElementById("commentBtn").addEventListener("click", (e) => {
+  const commentContainer = document.querySelector(".display-comment");
+  const comment = document.querySelector(".comment").value.trim();
+
+  const commentBody = `
+                              
+          <div class="comment">
+            <div class="profile">
+              <img src="./images/profile.jpg" alt="" />
+            </div>
+            <div class="details">
+              <div class="user-detail">
+                <span id="username">@crocoblock</span
+                ><span id="time">3 days ago</span>
+              </div>
+              <div class="comment-section">
+                <p>${comment}</p>
+                <i class="ri-more-2-fill"></i>
+              </div>
+              <div class="comment-action">
+                <div>
+                  <i id="like-comment" class="like-comment ri-thumb-up-line"></i
+                  ><span class="commentLike-count" id="commentLike-count"></span>
+                </div>
+                <i id="dislike-comment" class="dislike-comment ri-thumb-down-line"></i>
+                <button class="replyBtn" id="reply">Reply</button>
+              </div>
+              <div id="replier" class="commenter replier">
+                <div class="profile">
+                  <img src="./images/profile.jpg" alt="" />
+                </div>
+                <div class="write-comment">
+                  <input
+                    class="reply-comment"
+                    id="comment"
+                    type="text"
+                    placeholder=""
+                    autocomplete="off"
+                  />
+                  <div class="btn-emoji">
+                    <i class="fa-regular fa-face-laugh-beam"></i>
+                    <div class="button">
+                      <button class="cancel-reply" id="cancel">Cancel</button>
+                      <button class="reply" id="commentBtn" disabled>
+                        Reply
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  `;
+
+  commentContainer.innerHTML += commentBody;
+  document.querySelector(".comment").value = "";
+  addBlueBackgroundToBtn(e.target, e);
+});
+
+document.addEventListener("input", (e) => {
+  e.stopPropagation();
+  if (e.target.classList.contains("reply-comment")) {
+    const btn = e.target.closest(".write-comment").querySelector(".reply");
+    addBlueBackgroundToBtn(btn, e);
+  }
 });
 
 function addBlueBackgroundToBtn(btn, e) {
@@ -442,56 +505,80 @@ function addBlueBackgroundToBtn(btn, e) {
   }
 }
 
-document.getElementById("comment").addEventListener("click", () => {
-  document.querySelector(".btn-emoji").style.display = "flex";
-  document.getElementById("comment").style.borderBottom = "1px solid black";
+document.addEventListener("click", (e) => {
+  e.stopPropagation();
+
+  if (e.target.classList.contains("comment")) {
+    document.querySelector(".btn-emoji").style.display = "flex";
+    document.querySelector(".comment").style.borderBottom = "1px solid black";
+  }
 });
 
 document.getElementById("cancel").addEventListener("click", () => {
   document.querySelector(".btn-emoji").style.display = "none";
 });
 
-document.getElementById("reply").addEventListener("click", () => {
-  document.querySelector(".replier").style.display = "flex";
-  document.querySelector(".reply-comment").focus();
-  document.querySelector(".reply-comment").style.borderBottom =
-    "1px solid black";
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("replyBtn")) {
+    document.querySelector(".replier").style.display = "flex";
+    document.querySelector(".reply-comment").focus();
+    document.querySelector(".reply-comment").style.borderBottom =
+      "1px solid black";
+  }
 });
 
-document.querySelector(".cancel-reply").addEventListener("click", () => {
-  document.querySelector(".replier").style.display = "none";
+document.addEventListener("click", (e) => {
+  e.stopPropagation();
+
+  if (e.target.classList.contains("cancel-reply")) {
+    document.querySelector(".replier").style.display = "none";
+  }
 });
 
 //like and dislike comment
-document.getElementById("like-comment").addEventListener("click", () => {
-  const likeCount = document.getElementById("commentLike-count");
-  const btn = document.getElementById("like-comment");
-  toggleLikeDislikeBtn(
-    btn,
-    "like",
-    likeCount,
-    "like-comment",
-    "dislike-comment"
-  );
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("like-comment")) {
+    const commentBox = e.target.closest(".comment");
+    const likeCount = commentBox.querySelector(".commentLike-count");
+
+    toggleLikeDislikeBtn(
+      e.target,
+      "like",
+      likeCount,
+      ".like-comment",
+      ".dislike-comment"
+    );
+  }
 });
 
-document.getElementById("dislike-comment").addEventListener("click", () => {
-  const likeCount = document.getElementById("commentLike-count");
-  const btn = document.getElementById("dislike-comment");
-  toggleLikeDislikeBtn(
-    btn,
-    "dislike",
-    likeCount,
-    "like-comment",
-    "dislike-comment"
-  );
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("dislike-comment")) {
+    const commentBox = e.target.closest(".comment");
+    const likeCount = commentBox.querySelector(".commentLike-count");
+
+    toggleLikeDislikeBtn(
+      e.target,
+      "dislike",
+      likeCount,
+      ".like-comment",
+      ".dislike-comment"
+    );
+  }
 });
 
-function toggleLikeDislikeBtn(btn, action, likeCount, likeId, dislikeId) {
+function toggleLikeDislikeBtn(
+  btn,
+  action,
+  likeCount,
+  likeSelector,
+  dislikeSelector
+) {
+  const comment = btn.closest(".comment");
+  const disLikeBtn = comment.querySelector(dislikeSelector);
+  const likeBtn = comment.querySelector(likeSelector);
   const likeValue = parseAbbreviatedNumber(likeCount.textContent);
 
   if (action === "like") {
-    const disLikeBtn = document.getElementById(dislikeId);
     if (btn.classList.contains("ri-thumb-up-line")) {
       btn.classList.remove("ri-thumb-up-line");
       btn.classList.add("ri-thumb-up-fill");
@@ -509,7 +596,6 @@ function toggleLikeDislikeBtn(btn, action, likeCount, likeId, dislikeId) {
       likeCount.innerText = newCount === 0 ? "" : formatViewLikeCount(newCount);
     }
   } else {
-    const likeBtn = document.getElementById(likeId);
     if (btn.classList.contains("ri-thumb-down-line")) {
       btn.classList.remove("ri-thumb-down-line");
       btn.classList.add("ri-thumb-down-fill");

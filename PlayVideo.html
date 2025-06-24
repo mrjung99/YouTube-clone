@@ -140,7 +140,7 @@
             </div>
             <div class="write-comment">
               <input
-                id="comment"
+                class="comment"
                 type="text"
                 placeholder="Add a comment..."
                 autocomplete="off"
@@ -155,52 +155,7 @@
             </div>
           </div>
 
-          <div class="comment">
-            <div class="profile">
-              <img src="./images/profile.jpg" alt="" />
-            </div>
-            <div class="details">
-              <div class="user-detail">
-                <span id="username">@crocoblock</span
-                ><span id="time">3 days ago</span>
-              </div>
-              <div class="comment-section">
-                <p>Thank you! we are always happy to help</p>
-                <i class="ri-more-2-fill"></i>
-              </div>
-              <div class="comment-action">
-                <div>
-                  <i id="like-comment" class="ri-thumb-up-line"></i
-                  ><span id="commentLike-count"></span>
-                </div>
-                <i id="dislike-comment" class="ri-thumb-down-line"></i>
-                <button class="dislike-comment" id="reply">Reply</button>
-              </div>
-              <div id="replier" class="commenter replier">
-                <div class="profile">
-                  <img src="./images/profile.jpg" alt="" />
-                </div>
-                <div class="write-comment">
-                  <input
-                    class="reply-comment"
-                    id="comment"
-                    type="text"
-                    placeholder=""
-                    autocomplete="off"
-                  />
-                  <div class="btn-emoji">
-                    <i class="fa-regular fa-face-laugh-beam"></i>
-                    <div class="button">
-                      <button class="cancel-reply" id="cancel">Cancel</button>
-                      <button class="reply" id="commentBtn" disabled>
-                        Reply
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="display-comment"></div>
         </div>
       </div>
 

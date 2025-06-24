@@ -633,7 +633,7 @@ body {
 .comments-container .comment {
   display: flex;
   gap: 15px;
-  margin: 40px 0;
+  margin: 20px 0;
 }
 
 .comments-container .comment #username {
