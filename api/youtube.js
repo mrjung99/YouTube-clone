@@ -1,8 +1,8 @@
 exports.handler = async (event) => {
   const { type, videoId, channelId, query } = event.queryStringParameters;
   const API_KEYS = [
-    Process.env.YOUTUBE_API_KEY1,
-    Process.env.YOUTUBE_API_KEY2,
+    process.env.YOUTUBE_API_KEY1,
+    process.env.YOUTUBE_API_KEY2,
   ].filter(Boolean);
 
   let lastError = null;
