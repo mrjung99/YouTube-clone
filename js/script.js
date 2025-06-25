@@ -23,10 +23,21 @@ async function fetchData(topic) {
   try {
     const response = await fetch(`/api/youtube?type=search&query=${topic}`);
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      const errorData = await response.json();
+      throw new Error(
+        errorData.error || `HTTP error! Status: ${response.status}`
+      );
     }
 
     const data = await response.json();
+
+    // Validate response structure
+    if (!data.items || !Array.isArray(data.items)) {
+      throw new Error("Invalid data structure from API");
+    }
+
+    // Clear previous content
+    videoC;
 
     data.items.forEach((video, index) => {
       createCard(video, topic, index);
