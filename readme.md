@@ -2,7 +2,7 @@
 
 A responsive YouTube clone that uses the YouTube API with automatic API key rotation through Netlify serverless functions.
 
-![home page demo](image.png)
+![home page demo](./images/image.png)
 
 ## Key Features
 
@@ -49,8 +49,13 @@ git clone https://github.com/your-username/youtube-clone.git
 cd youtube-clone
 
 # No installation needed for frontend-only development
+```
 
 ### Create a .env file for local testing
-YOUTUBE_API_KEY_1=your_first_key
-YOUTUBE_API_KEY_2=your_second_key
+
+YOUTUBE_API_KEY1=your_first_key
+YOUTUBE_API_KEY2=your_second_key
+
+```
+
 ```
