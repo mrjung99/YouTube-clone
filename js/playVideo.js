@@ -1,7 +1,7 @@
 // const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
 
 //mrjung
-const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
+// const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
 
 let player;
 let duration = 0;
@@ -179,7 +179,7 @@ function formatTime(duration) {
   }
 }
 
-//this will make visible volume progress bar when hover over on it
+//this will make  volume progress bar visible when hover over on it
 const volumeContainer = document.querySelector(".volume");
 const volumeBar = document.getElementById("volume-slider");
 
@@ -192,30 +192,33 @@ volumeContainer.addEventListener("mouseleave", () => {
 });
 
 async function getData() {
-  const searchContentDetailUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videosId}&key=${API_KEY}&part=snippet,contentDetails,statistics,status`;
-  const response = await fetch(searchContentDetailUrl);
+  const response = await fetch(`/api/youtube?type=video?videoId${videosId}`);
   const data = await response.json();
 
   const channelId = data.items[0].snippet.channelId;
-  const channelInfoUrl = `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics,status&id=${channelId}&key=${API_KEY}`;
-  const channelInfo = await fetch(channelInfoUrl);
+
+  const channelInfo = await fetch(
+    `/api/youtube?type=channel?channelId=${channelId}`
+  );
   const channelData = await channelInfo.json();
 
   insertInfo(data, channelData);
 
   const channelTitle = data.items[0].snippet.title;
   const topic = channelTitle.split(" ").slice(0, 4).join(" ");
-  const recomendedVideoUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=6&q=${encodeURIComponent(
-    topic
-  )}&key=${API_KEY}`;
-  const fetchRecomendedVideo = await fetch(recomendedVideoUrl);
+
+  const fetchRecomendedVideo = await fetch(
+    `/api/youtube?type=search?query=${encodeURIComponent(topic)}`
+  );
   const recomendedData = await fetchRecomendedVideo.json();
 
   const recomendedVideoIds = recomendedData.items
     .map((item) => item.id.videoId)
     .join(",");
-  const statUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${recomendedVideoIds}&key=${API_KEY}`;
-  const statResponse = await fetch(statUrl);
+
+  const statResponse = await fetch(
+    `/api/youtube?type=video?videoId=${recomendedVideoIds}`
+  );
   const statData = await statResponse.json();
   renderRecomendedVideo(statData);
 }

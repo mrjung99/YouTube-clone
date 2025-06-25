@@ -1,3 +1,0 @@
-// const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
-
-//CODE ADDICT NEPAL

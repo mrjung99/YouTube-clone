@@ -1,4 +1,4 @@
-const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
+// const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
 
 //second api key
 // const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
@@ -20,9 +20,8 @@ const maxVideos = 1;
 const players = [];
 
 async function fetchData(topic) {
-  const searchVideoUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxVideos}&q=${topic}&type=video&key=${API_KEY}`;
   try {
-    const response = await fetch(searchVideoUrl);
+    const response = await fetch(`/api/youtube?type=search&query=${topic}`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -43,14 +42,16 @@ async function createCard(video, topic, index) {
   const playerId = `player-${topic}-${index}`;
 
   //this will fetch the details about video
-  const searchContentDetailUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${API_KEY}&part=snippet,contentDetails,statistics,status`;
-  const response = await fetch(searchContentDetailUrl);
+
+  const response = await fetch(`/api/youtube?type=video&videoId=${videoId}`);
+
   const data = await response.json();
   const channelId = data.items[0].snippet.channelId;
 
   //this fetch the details about channel
-  const channelInfoUrl = `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${API_KEY}`;
-  const channel = await fetch(channelInfoUrl);
+  const channel = await fetch(
+    `/api/youtube?type=channel&channelId=${channelId}`
+  );
   const channelData = await channel.json();
 
   const channelProfile = channelData.items[0].snippet.thumbnails.default.url;
@@ -153,7 +154,7 @@ function redirectToChannelProfile(channelId) {
 //this will format the like count as 1k,1.5k etc
 function formatViewLikeCount(count) {
   const likeCount = Number(count);
-  if (likeCount >= 1e9) return (likeCount / 139).toFixed(1) + "B";
+  if (likeCount >= 1e9) return (likeCount / 1e9).toFixed(1) + "B";
   if (likeCount >= 1e6) return (likeCount / 1e6).toFixed(1) + "M";
   if (likeCount >= 1e3) return (likeCount / 1e3).toFixed(1) + "k";
 }
