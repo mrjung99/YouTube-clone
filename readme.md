@@ -53,9 +53,7 @@ cd youtube-clone
 
 ### Create a .env file for local testing
 
+```
 YOUTUBE_API_KEY1=your_first_key
 YOUTUBE_API_KEY2=your_second_key
-
-```
-
 ```
