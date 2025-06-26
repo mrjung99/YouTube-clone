@@ -192,7 +192,7 @@ volumeContainer.addEventListener("mouseleave", () => {
 });
 
 async function getData() {
-  const response = await fetch(`/api/youtube?type=video?videoId=${videosId}`);
+  const response = await fetch(`/api/youtube?type=video&videoId=${videosId}`);
   const data = await response.json();
   if (!data.items || data.items.length === 0) {
     throw new Error("Video data not found.");
@@ -201,7 +201,7 @@ async function getData() {
   const channelId = data.items[0].snippet.channelId;
 
   const channelInfo = await fetch(
-    `/api/youtube?type=channel?channelId=${channelId}`
+    `/api/youtube?type=channel&channelId=${channelId}`
   );
   const channelData = await channelInfo.json();
 
@@ -211,7 +211,7 @@ async function getData() {
   const topic = channelTitle.split(" ").slice(0, 4).join(" ");
 
   const fetchRecomendedVideo = await fetch(
-    `/api/youtube?type=search?query=${encodeURIComponent(topic)}`
+    `/api/youtube?type=search&query=${encodeURIComponent(topic)}`
   );
   const recomendedData = await fetchRecomendedVideo.json();
 
@@ -220,7 +220,7 @@ async function getData() {
     .join(",");
 
   const statResponse = await fetch(
-    `/api/youtube?type=video?videoId=${recomendedVideoIds}`
+    `/api/youtube?type=video&videoId=${recomendedVideoIds}`
   );
   const statData = await statResponse.json();
   renderRecomendedVideo(statData);
