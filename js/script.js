@@ -338,7 +338,7 @@ async function delay(ms) {
 window.onYouTubeIframeAPIReady = async () => {
   for (const topic of videoTopics) {
     await fetchData(topic);
-    await delay(500);
+    await delay(100);
   }
 };
 
