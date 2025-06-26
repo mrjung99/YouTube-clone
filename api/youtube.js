@@ -6,6 +6,8 @@ exports.handler = async (event) => {
   const API_KEYS = [
     process.env.YOUTUBE_API_KEY1,
     process.env.YOUTUBE_API_KEY2,
+    process.env.YOUTUBE_API_KEY3,
+    process.env.YOUTUBE_API_KEY4,
   ].filter(Boolean);
 
   let lastError = null;
