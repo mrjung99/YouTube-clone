@@ -34,6 +34,26 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerReady(event) {
   player.playVideo();
+
+  setTimeout(() => {
+    const overlay = document.querySelector(".player-overlay");
+    const playerControl = document.querySelector(".player-control");
+    playerControl.style.opacity = "0";
+    overlay.style.opacity = "0";
+  }, 500);
+
+  document
+    .querySelector(".player-control")
+    .addEventListener("mouseover", () => {
+      document.querySelector(".player-control").style.opacity = "1";
+    });
+
+  document
+    .querySelector(".player-control")
+    .addEventListener("mouseleave", () => {
+      document.querySelector(".player-control").style.opacity = "0";
+    });
+
   duration = player.getDuration();
   document.querySelector(".total-duration").textContent = formatTime(duration);
 
