@@ -4,9 +4,5 @@
 # Node.js dependencies
 node_modules/
 
-# JSON files (if you want to ignore ALL .json files)
-*.json
 
-# OR to ignore specific JSON files (better practice)
-# config.json
-# secrets.json
+.env
