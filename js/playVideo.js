@@ -192,7 +192,7 @@ volumeContainer.addEventListener("mouseleave", () => {
 });
 
 async function getData() {
-  const response = await fetch(`/api/youtube?type=video?videoId${videosId}`);
+  const response = await fetch(`/api/youtube?type=video?videoId=${videosId}`);
   const data = await response.json();
   if (!data.items || data.items.length === 0) {
     throw new Error("Video data not found.");
