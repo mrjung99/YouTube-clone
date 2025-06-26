@@ -1,3 +1,8 @@
+// const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
+
+//second api key
+// const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
+
 const videoContainer = document.querySelector(".container");
 const videoTopics = [
   "sports",
@@ -17,9 +22,8 @@ const players = [];
 async function fetchData(topic) {
   try {
     const response = await fetch(`/api/youtube?type=search&query=${topic}`);
-
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
+      const errorData = await response.json();
       throw new Error(
         errorData.error || `HTTP error! Status: ${response.status}`
       );
@@ -27,44 +31,23 @@ async function fetchData(topic) {
 
     const data = await response.json();
 
-    // More comprehensive response validation
-    if (!data || typeof data !== "object") {
-      throw new Error("Invalid API response format");
+    // Validate response structure
+    if (!data.items || !Array.isArray(data.items)) {
+      throw new Error("Invalid data structure from API");
     }
 
-    if (data.error) {
-      throw new Error(data.error.message || "YouTube API error");
-    }
+    // Clear previous content
+    // videoContainer.innerHTML = "";
 
-    if (!Array.isArray(data.items)) {
-      throw new Error("Expected items array in response");
-    }
-
-    // Skip if no items instead of throwing error
-    if (data.items.length === 0) {
-      console.warn(`No videos found for topic: ${topic}`);
-      return;
-    }
-
-    // Process each video
-    for (const video of data.items) {
-      try {
-        await createCard(video, topic, data.items.indexOf(video));
-      } catch (cardError) {
-        console.error("Error creating card for video:", video, cardError);
-        // Continue with next video even if one fails
-      }
-    }
+    data.items.forEach((video, index) => {
+      createCard(video, topic, index);
+    });
   } catch (error) {
-    console.error(`Error fetching data for topic ${topic}:`, error);
-    // Show user-friendly error message
-    const errorElement = document.createElement("div");
-    errorElement.className = "error-message";
-    errorElement.textContent = `Could not load videos for ${topic}. Please try again later.`;
-    videoContainer.appendChild(errorElement);
+    console.error("Error fetching data:", error);
   }
 }
 
+//create video card with unque id
 async function createCard(video, topic, index) {
   try {
     const videoId = video.id?.videoId;
@@ -75,33 +58,32 @@ async function createCard(video, topic, index) {
 
     const playerId = `player-${topic}-${index}`;
 
-    // Fetch video details
-    const videoResponse = await fetch(
-      `/api/youtube?type=video&videoId=${videoId}`
-    );
-    if (!videoResponse.ok) throw new Error("Failed to fetch video details");
+    //this will fetch the details about video
 
-    const videoData = await videoResponse.json();
-    if (!videoData?.items?.[0]?.snippet) {
-      throw new Error("Invalid video data structure");
+    const response = await fetch(`/api/youtube?type=video&videoId=${videoId}`);
+
+    const data = await response.json();
+
+    if (!data || !Array.isArray(data.items) || data.items.length === 0) {
+      throw new Error("Video details not found");
     }
 
-    const channelId = videoData.items[0].snippet.channelId;
+    const channelId = data.items[0].snippet.channelId;
 
-    // Fetch channel details
-    const channelResponse = await fetch(
+    //this fetch the details about channel
+    const channel = await fetch(
       `/api/youtube?type=channel&channelId=${channelId}`
     );
-    if (!channelResponse.ok) throw new Error("Failed to fetch channel details");
-
-    const channelData = await channelResponse.json();
-    if (!channelData?.items?.[0]?.snippet) {
-      throw new Error("Invalid channel data structure");
+    const channelData = await channel.json();
+    if (
+      !channelData ||
+      !Array.isArray(channelData.items) ||
+      channelData.items.length === 0
+    ) {
+      throw new Error("Channel details not found");
     }
 
-    const channelProfile =
-      channelData.items[0].snippet.thumbnails?.default?.url ||
-      "./images/default-profile.jpg";
+    const channelProfile = channelData.items[0].snippet.thumbnails.default.url;
 
     const card = document.createElement("div");
     card.className = "card";
@@ -110,39 +92,35 @@ async function createCard(video, topic, index) {
     });
 
     card.innerHTML = `
-      <div class="video-preview">
-        <img class="video-thumb" src="${
-          videoData.items[0].snippet.thumbnails?.high?.url ||
-          "./images/default-thumbnail.jpg"
-        }" alt="" />
-        <div id="${playerId}" class="video-iframe"></div>
-        <div class="iframe-overlay"></div>
-      </div>
-      <div class="description">
-        <div class="profile">
-          <img src="${channelProfile}" alt="" />
-        </div>
-        <div class="video-info">
-          <span class="video-title">${
-            video.snippet.title || "Untitled Video"
-          }</span>
-          <span class="channel-name">${
-            video.snippet.channelTitle || "Unknown Channel"
-          }</span>
-          <div class="views-time">
-            <span class="views">
-              ${formatViewLikeCount(
-                videoData.items[0].statistics?.viewCount || 0
-              )} views
-            </span>
-            <span>&middot;</span>
-            <span class="time">${formatPublishedDate(
-              videoData.items[0].snippet.publishedAt
-            )}</span> 
-          </div>
-        </div>
-      </div>
-    `;
+          <div class="video-preview">
+              <img class="video-thumb" src="${
+                data.items[0].snippet.thumbnails.high.url
+              }" alt="" />
+              <div id="${playerId}" class="video-iframe"></div>
+              <div class="iframe-overlay"></div>
+            </div>
+            <div class="description">
+              <div class="profile">
+                  <img src="${channelProfile}" alt="" />
+              </div>
+              <div class="video-info">
+                <span class="video-title">${video.snippet.title}</span>
+                  <span class="channel-name">${video.snippet.channelTitle}
+                    </span>
+                <div class="views-time">
+                  <span class="views">
+                  ${formatViewLikeCount(
+                    data.items[0].statistics.viewCount
+                  )} views
+                  </span>
+                  <span>&middot;</span>
+                  <span class="time">${formatPublishedDate(
+                    data.items[0].snippet.publishedAt
+                  )}</span> 
+                </div>
+              </div>
+            </div>
+          `;
 
     const profileLink = card.querySelectorAll(".profile, .channel-name");
     profileLink.forEach((elem) => {
@@ -164,6 +142,7 @@ async function createCard(video, topic, index) {
       const player = new YT.Player(playerId, {
         height: "100%",
         width: "100%",
+
         videoId: videoId,
         playerVars: {
           controls: 0,
@@ -178,8 +157,11 @@ async function createCard(video, topic, index) {
         },
       });
 
+      console.log(player);
+
       players.push({ card, player });
 
+      //play pause on hover on card
       function onPlayerReady(event) {
         event.target.pauseVideo();
         card.addEventListener("mouseenter", () => player.playVideo());
@@ -201,24 +183,19 @@ function redirectToChannelProfile(channelId) {
   window.location.href = `channelProfile.html?channelId=${channelId}`;
 }
 
+//this will format the like count as 1k,1.5k etc
 function formatViewLikeCount(count) {
-  if (typeof count === "string") count = parseInt(count);
-  if (isNaN(count)) return "0";
-
-  if (count >= 1e9) return (count / 1e9).toFixed(1) + "B";
-  if (count >= 1e6) return (count / 1e6).toFixed(1) + "M";
-  if (count >= 1e3) return (count / 1e3).toFixed(1) + "k";
-  return count.toString();
+  const likeCount = Number(count);
+  if (likeCount >= 1e9) return (likeCount / 1e9).toFixed(1) + "B";
+  if (likeCount >= 1e6) return (likeCount / 1e6).toFixed(1) + "M";
+  if (likeCount >= 1e3) return (likeCount / 1e3).toFixed(1) + "k";
 }
 
+//this will format the published date as 1day ago, 2months ago, 1year ago etc
 function formatPublishedDate(date) {
-  if (!date) return "Unknown time";
-
   const publishedDate = new Date(date);
-  if (isNaN(publishedDate.getTime())) return "Unknown time";
-
   const now = new Date();
-  const diff = now - publishedDate;
+  const diff = now - publishedDate; //in milliseconds
 
   const sec = diff / 1000;
   const min = sec / 60;
@@ -228,24 +205,29 @@ function formatPublishedDate(date) {
   const year = month / 12;
 
   if (year >= 1)
-    return Math.floor(year) + " year" + (year >= 2 ? "s" : "") + " ago";
+    return year.toFixed() + " " + "year" + (year >= 2 ? "s" : "") + " " + "ago";
 
   if (month >= 1)
-    return Math.floor(month) + " month" + (month >= 2 ? "s" : "") + " ago";
+    return (
+      month.toFixed() + " " + "month" + (month >= 2 ? "s" : "") + " " + "ago"
+    );
 
   if (day >= 1)
-    return Math.floor(day) + " day" + (day >= 2 ? "s" : "") + " ago";
+    return Math.floor(day) + " " + "day" + (day >= 2 ? "s" : "") + " " + "ago";
 
   if (hrs >= 1)
-    return Math.floor(hrs) + " hour" + (hrs >= 2 ? "s" : "") + " ago";
+    return Math.floor(hrs) + " " + "hour" + (hrs >= 2 ? "s" : "") + " " + "ago";
 
   if (min >= 1)
-    return Math.floor(min) + " minute" + (min >= 2 ? "s" : "") + " ago";
+    return (
+      Math.floor(min) + " " + "minute" + (min >= 2 ? "s" : "") + " " + "ago"
+    );
 
   return "Just now";
 }
 
-// UI Event Handlers (keep the existing ones)
+//**************************************************************/
+
 const createBtn = document.querySelector(".create");
 const createPopUp = document.querySelector(".create-popUP");
 const bell = document.querySelector(".bell");
@@ -352,10 +334,11 @@ async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// This gets called by the YouTube API once it's loaded
 window.onYouTubeIframeAPIReady = async () => {
   for (const topic of videoTopics) {
     await fetchData(topic);
-    await delay(1000); // Add delay between requests to avoid rate limiting
+    await delay(500);
   }
 };
 
