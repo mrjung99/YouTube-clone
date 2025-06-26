@@ -37,7 +37,7 @@ async function fetchData(topic) {
     }
 
     // Clear previous content
-    videoC;
+    videoContainer.innerHTML = "";
 
     data.items.forEach((video, index) => {
       createCard(video, topic, index);
