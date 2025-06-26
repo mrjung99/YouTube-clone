@@ -37,7 +37,7 @@ async function fetchData(topic) {
     }
 
     // Clear previous content
-    videoContainer.innerHTML = "";
+    // videoContainer.innerHTML = "";
 
     data.items.forEach((video, index) => {
       createCard(video, topic, index);
@@ -49,31 +49,49 @@ async function fetchData(topic) {
 
 //create video card with unque id
 async function createCard(video, topic, index) {
-  const videoId = video.id.videoId;
-  const playerId = `player-${topic}-${index}`;
+  try {
+    const videoId = video.id?.videoId;
+    if (!videoId) {
+      console.warn("Missing videoId for topic:", topic);
+      return;
+    }
 
-  //this will fetch the details about video
+    const playerId = `player-${topic}-${index}`;
 
-  const response = await fetch(`/api/youtube?type=video&videoId=${videoId}`);
+    //this will fetch the details about video
 
-  const data = await response.json();
-  const channelId = data.items[0].snippet.channelId;
+    const response = await fetch(`/api/youtube?type=video&videoId=${videoId}`);
 
-  //this fetch the details about channel
-  const channel = await fetch(
-    `/api/youtube?type=channel&channelId=${channelId}`
-  );
-  const channelData = await channel.json();
+    const data = await response.json();
 
-  const channelProfile = channelData.items[0].snippet.thumbnails.default.url;
+    if (!data || !Array.isArray(data.items) || data.items.length === 0) {
+      throw new Error("Video details not found");
+    }
 
-  const card = document.createElement("div");
-  card.className = "card";
-  card.addEventListener("click", () => {
-    redirectPlayVideoPage(videoId);
-  });
+    const channelId = data.items[0].snippet.channelId;
 
-  card.innerHTML = `
+    //this fetch the details about channel
+    const channel = await fetch(
+      `/api/youtube?type=channel&channelId=${channelId}`
+    );
+    const channelData = await channel.json();
+    if (
+      !channelData ||
+      !Array.isArray(channelData.items) ||
+      channelData.items.length === 0
+    ) {
+      throw new Error("Channel details not found");
+    }
+
+    const channelProfile = channelData.items[0].snippet.thumbnails.default.url;
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.addEventListener("click", () => {
+      redirectPlayVideoPage(videoId);
+    });
+
+    card.innerHTML = `
           <div class="video-preview">
               <img class="video-thumb" src="${
                 data.items[0].snippet.thumbnails.high.url
@@ -104,54 +122,57 @@ async function createCard(video, topic, index) {
             </div>
           `;
 
-  const profileLink = card.querySelectorAll(".profile, .channel-name");
-  profileLink.forEach((elem) => {
-    elem.addEventListener("click", (e) => {
+    const profileLink = card.querySelectorAll(".profile, .channel-name");
+    profileLink.forEach((elem) => {
+      elem.addEventListener("click", (e) => {
+        e.stopPropagation();
+        redirectToChannelProfile(channelId);
+      });
+    });
+
+    videoContainer.appendChild(card);
+
+    const iframe = card.querySelector(".video-iframe");
+    iframe.addEventListener("click", (e) => {
       e.stopPropagation();
-      redirectToChannelProfile(channelId);
-    });
-  });
-
-  videoContainer.appendChild(card);
-
-  const iframe = card.querySelector(".video-iframe");
-  iframe.addEventListener("click", (e) => {
-    e.stopPropagation();
-    redirectPlayVideoPage(videoId);
-  });
-
-  setTimeout(() => {
-    const player = new YT.Player(playerId, {
-      height: "100%",
-      width: "100%",
-
-      videoId: videoId,
-      playerVars: {
-        controls: 0,
-        mute: 1,
-        modestbranding: 0,
-        rel: 0,
-        showinfo: 0,
-      },
-      events: {
-        onReady: onPlayerReady,
-        onStateChange: onPlayerStateChange,
-      },
+      redirectPlayVideoPage(videoId);
     });
 
-    console.log(player);
+    setTimeout(() => {
+      const player = new YT.Player(playerId, {
+        height: "100%",
+        width: "100%",
 
-    players.push({ card, player });
+        videoId: videoId,
+        playerVars: {
+          controls: 0,
+          mute: 1,
+          modestbranding: 0,
+          rel: 0,
+          showinfo: 0,
+        },
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange,
+        },
+      });
 
-    //play pause on hover on card
-    function onPlayerReady(event) {
-      event.target.pauseVideo();
-      card.addEventListener("mouseenter", () => player.playVideo());
-      card.addEventListener("mouseleave", () => player.pauseVideo());
-    }
+      console.log(player);
 
-    function onPlayerStateChange() {}
-  }, 500);
+      players.push({ card, player });
+
+      //play pause on hover on card
+      function onPlayerReady(event) {
+        event.target.pauseVideo();
+        card.addEventListener("mouseenter", () => player.playVideo());
+        card.addEventListener("mouseleave", () => player.pauseVideo());
+      }
+
+      function onPlayerStateChange() {}
+    }, 500);
+  } catch (err) {
+    console.error("Failed to create card for video:", video, err);
+  }
 }
 
 function redirectPlayVideoPage(videoId) {
@@ -309,11 +330,16 @@ function loadYouTubeAPI() {
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 }
 
+async function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 // This gets called by the YouTube API once it's loaded
-window.onYouTubeIframeAPIReady = function () {
-  videoTopics.forEach((topic) => {
-    fetchData(topic);
-  });
+window.onYouTubeIframeAPIReady = async () => {
+  for (const topic of videoTopics) {
+    await fetchData(topic);
+    await delay(1000);
+  }
 };
 
 loadYouTubeAPI();
