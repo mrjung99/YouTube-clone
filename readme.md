@@ -2,7 +2,8 @@
 
 A responsive YouTube clone that uses the YouTube API with automatic API key rotation through Netlify serverless functions.
 
-![home page demo](./images/image.png)
+![home page demo](<./images/Screenshot%20(17).png>)
+![video player](<./images/Screenshot%20(18).png>)
 
 ## Key Features
 
