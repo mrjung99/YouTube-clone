@@ -152,8 +152,6 @@ async function createCard(video, topic, index) {
         },
       });
 
-      console.log(player);
-
       players.push({ card, player });
 
       //play pause on hover on card
