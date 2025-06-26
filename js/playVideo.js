@@ -1,8 +1,3 @@
-// const API_KEY = "AIzaSyBPaEISoAhz0kwRrEoTU4XtSlZIUFjoAVs";
-
-//mrjung
-// const API_KEY = "AIzaSyC0wc41xZbw0CaaYUmwKvP0C-NHe2_FTY8";
-
 let player;
 let duration = 0;
 let lastVolume = 100;
@@ -40,19 +35,19 @@ function onPlayerReady(event) {
     const playerControl = document.querySelector(".player-control");
     playerControl.style.opacity = "0";
     overlay.style.opacity = "0";
-  }, 500);
+  }, 2000);
 
-  document
-    .querySelector(".player-control")
-    .addEventListener("mouseover", () => {
-      document.querySelector(".player-control").style.opacity = "1";
-    });
+  const playerControl = document.querySelector(".player-control");
 
-  document
-    .querySelector(".player-control")
-    .addEventListener("mouseleave", () => {
-      document.querySelector(".player-control").style.opacity = "0";
-    });
+  playerControl.addEventListener("mouseover", () => {
+    playerControl.style.opacity = "1";
+  });
+
+  playerControl.addEventListener("mouseleave", () => {
+    if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+      playerControl.style.opacity = "0";
+    }
+  });
 
   duration = player.getDuration();
   document.querySelector(".total-duration").textContent = formatTime(duration);
@@ -103,10 +98,11 @@ function togglePlayPause() {
   const overlay = document.querySelector(".player-overlay");
   const btn = document.querySelector(".overlay-play-pause");
   const lowerBtn = document.querySelector(".play-pause");
-
+  const playerControl = document.querySelector(".player-control");
   if (state === YT.PlayerState.PLAYING) {
     player.pauseVideo();
     overlay.style.opacity = "1";
+    playerControl.style.opacity = "1";
     btn.innerHTML = `<i class="fa-solid fa-play"></i>`;
     lowerBtn.innerHTML = `<i class="fa-solid fa-play"></i>`;
   } else {
