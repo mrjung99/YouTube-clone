@@ -1,8 +1,0 @@
-# Netlify files/folders
-.netlify/
-
-# Node.js dependencies
-node_modules/
-
-
-.env
