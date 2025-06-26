@@ -62,7 +62,7 @@ exports.handler = async (event) => {
               }),
             };
           }
-          apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${encodeURIComponent(
+          apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=2&q=${encodeURIComponent(
             query
           )}&key=${API_KEY}`;
           break;
