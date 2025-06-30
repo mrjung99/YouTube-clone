@@ -19,6 +19,7 @@ function onYouTubeIframeAPIReady() {
       modestbranding: 0,
       rel: 0,
       showinfo: 0,
+      autoplay: 1,
     },
     events: {
       onReady: onPlayerReady,
@@ -28,8 +29,6 @@ function onYouTubeIframeAPIReady() {
 }
 
 function onPlayerReady(event) {
-  player.playVideo();
-
   setTimeout(() => {
     const overlay = document.querySelector(".player-overlay");
     const playerControl = document.querySelector(".player-control");
@@ -81,17 +80,36 @@ function onPlayerReady(event) {
     .addEventListener("click", toggleFullScreen);
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === " ") togglePlayPause;
+    if (e.key === " ") {
+      e.preventDefault();
+      togglePlayPause();
+    }
     if (e.key === "ArrowRight")
-      player.seekTo(player.getCurrentDuration() + 5, true);
-    if (e.key === "ArrowLeft")
-      player.seekTo(player.getCurrentDuration() - 5, true);
+      player.seekTo(player.getCurrentTime() + 5, true);
+    if (e.key === "ArrowLeft") player.seekTo(player.getCurrentTime() - 5, true);
   });
 
   setInterval(updateProgress, 1000);
 }
 
-function onPlayerStateChange(event) {}
+function onPlayerStateChange(event) {
+  const btn = document.querySelector(".overlay-play-pause");
+  const lowerBtn = document.querySelector(".play-pause");
+  const overlay = document.querySelector(".player-overlay");
+
+  if (event.data === YT.PlayerState.PLAYING) {
+    btn.innerHTML = `<i class="fa-solid fa-pause"></i>`;
+    lowerBtn.innerHTML = `<i class="fa-solid fa-pause"></i>`;
+    overlay.style.opacity = "0";
+  } else if (
+    event.data === YT.PlayerState.PAUSED ||
+    event.data === YT.PlayerState.ENDED
+  ) {
+    btn.innerHTML = `<i class="fa-solid fa-play"></i>`;
+    lowerBtn.innerHTML = `<i class="fa-solid fa-play"></i>`;
+    overlay.style.opacity = "1";
+  }
+}
 
 function togglePlayPause() {
   const state = player.getPlayerState();
@@ -395,7 +413,7 @@ function hideButton() {
   const lineCount = totalHeight / lineHeight;
   const btn = document.getElementById("more-less");
 
-  if (lineCount <= 1) {
+  if (lineCount < 1) {
     btn.style.display = "none";
   }
 }
